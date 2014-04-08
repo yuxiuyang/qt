@@ -1,0 +1,165 @@
+#include "basicmgr.h"
+#include <errno.h>
+#include <iostream>
+using namespace std;
+BasicMgr::BasicMgr():m_dataQueue(MAX_BUF)
+{
+    m_iFrequency = 1;
+    m_iTimeout = 1000;
+    m_iReadNum = 0;
+    m_iCurTime = 0;
+    m_file = NULL;
+    memset(m_readBuf,0,sizeof(m_readBuf));
+}
+
+void BasicMgr::setFrequency(int fre){
+    assert(fre<=500);//the basic timer'interval is 2mms. must not more then 500
+    m_iFrequency = fre;
+    //1s = 1000ms
+    m_iTimeout = 1000/m_iFrequency;
+    if(m_iTimeout%2)//if not 2's Integer multiples
+        m_iTimeout+=1;//m_iTimeout have to >=2 ms
+}
+
+bool BasicMgr::test(){
+    if(m_testMsg.isStart){
+        if(m_testMsg.isFirst){
+            m_testMsg.isFirst =false;
+            gettimeofday(&m_tStartTimer,NULL);
+            return false;
+        }
+
+        struct timeval curTime;
+        gettimeofday(&curTime,NULL);
+        int timeuse = (1000*1000*(curTime.tv_sec-m_tStartTimer.tv_sec)+(curTime.tv_usec-m_tStartTimer.tv_usec))/1000;
+
+        m_testMsg.timeSum += timeuse;
+        m_testMsg.times += 1;
+        char buf[100]={0};
+        sprintf(buf,"Spo2Mgr::onTimer   interval=%dms times=%d",timeuse,m_testMsg.times);
+        cout<<buf<<endl;
+
+        m_tStartTimer = curTime;
+        return true;
+    }
+    return false;
+}
+void BasicMgr::generateTestFile(){//
+    m_file->clear();//clear file
+    if(!isOpenFile()){
+        cout<<"read failure  please call openFile to create a file"<<endl;
+        return;
+    }
+    for(int i=0;i<256;i++){
+        m_file->write("%02x ",i);
+    }
+    m_file->flush();
+}
+void BasicMgr::append(const char* data){//
+    if(!isOpenFile()){
+        cout<<"read failure  please call openFile to create a file"<<endl;
+        return;
+    }
+    m_file->write(data);
+    m_file->flush();
+}
+
+void BasicMgr::read(){
+    if(!isOpenFile()){
+        cout<<"read failure  please call openFile to create a file"<<endl;
+        return;
+    }
+    memset(m_readBuf,0,sizeof(m_readBuf));
+    assert(m_iReadNum<MAX_BUF);
+    int len = m_file->read(m_readBuf,m_iReadNum);//read 3*300 datas per time.
+    if(len<=0){
+        cout<<"len="<<len<<" read error"<<endl;
+    }
+    int recieveBuf_len=0;
+    resolveProtocol(m_readBuf,len,m_recieveBuf,recieveBuf_len);
+    if(recieveBuf_len){
+        m_dataQueue.push(m_recieveBuf,recieveBuf_len);
+    }else{
+        cout<<"resolveProtocol error happen"<<endl;
+    }
+
+    //cout<<"read   m_readBuf="<<m_readBuf<<endl;
+}
+bool BasicMgr::openFile(const char* filename){
+    if(isOpenFile()){
+        cout<<"had create a file"<<endl;
+        return false;
+    }
+    m_file = new File();
+    assert(m_file);
+    m_file->setFileName(filename);
+    m_file->setReadFileProperty(true);
+    return m_file->open("a+");
+
+}
+
+bool BasicMgr::isOpenFile(){
+    return m_file==NULL?false:true;
+}
+
+bool BasicMgr::closeFile(){
+    if(!m_file){
+        cout<<"closefile m_file=null may be not created"<<endl;
+        return false;
+    }
+    assert(m_file->close());
+    delete m_file;
+    m_file = NULL;
+    return true;
+}
+void BasicMgr::resolveProtocol(const char* buf,int size,BYTE* recieveBuf,int& recieveBuf_len){//
+    //cout<<"buf=%s"<<buf<<endl;
+    char tmp[3]={0};
+    int index=0;
+    recieveBuf_len = 0;
+        for(int i=0;i<size;){
+            while(buf[i]==' '&&i<size) i++;//Filter space
+            if(i==size) return;
+
+            bool sign = true;
+            while(buf[i]!=' '&&i<size){
+                    if(index<2){//get the data.
+                            tmp[index++] = buf[i];
+                            //printf("tmp[%d]=%d\n",index-1,tmp[index-1]);
+                    }else{
+                            cout<<"may be error"<<endl;
+                            sign = false;
+                            i++;
+                            break;
+                    }
+                    i++;
+            }
+
+            if(sign&&index == 2){//hex to dec.
+                    recieveBuf[recieveBuf_len++] = twoBYTEConverToHex(charConvertToHex(tmp[0]),charConvertToHex(tmp[1]));
+                    //printf("%02x ",rel);
+            }else if(sign&&index!=2){
+                    cout<<endl<<"may be error  tmp[0]="<<tmp[0]<<endl;
+            }
+            memset(tmp,0,sizeof(tmp));
+            index = 0;
+        }
+}
+bool BasicMgr::connect(){
+    if(!m_network){
+        cout<<"please init the network"<<endl;
+    }
+    return m_network->connect();
+}
+
+bool BasicMgr::disConnect(){
+    return m_network->disConnect();
+}
+bool BasicMgr::sendTestData(const char* buf,int len){
+    int ret = send(m_network->getSockFd(),buf,len,0);
+    if(ret<=0){
+        printf("send error errno=%d\n",errno);
+        return false;
+    }
+    return true;
+}
