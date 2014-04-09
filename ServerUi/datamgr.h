@@ -4,28 +4,38 @@
 #include <QThread>
 #include "l_jn.h"
 #include "../include/define.h"
-class DataMgr : public QThread
+struct SENDMSG_{
+    int fd;
+    Msg_* msg;
+};
+
+class DataMgr
 {
-Q_OBJECT
 public:
-    explicit DataMgr(QObject *parent = 0);
+    DataMgr();
     ~DataMgr();
-signals:
-
-public slots:
-
 
 public:
-    void sentData(const Msg_* msg);
-    void run();
+    void sendData(int fd,const Msg_* msg);
+    void sendStateMsg(int fd,const Msg_* msg);
+
+
+    void recvData(const Msg_* msg);
 
 protected:
-    static void sendState(void* pv);
-    void recvData();
+    static void sendData_(void* pv);
+    static void sendStateMsg_(void* pv);
+
+
+    void handDataMsg();
+    void handleNotifyMsg();
+    void handleCmdMsg();
+
 
 
 private:
-    CJobNest *m_pSendJob;//send data task thread.
+    CJobNest *m_pSendDataJob;//send data task thread.
+    CJobNest *p_pSendStateMsgJob;//send state msg thread
 };
 
 #endif // DATAMGR_H

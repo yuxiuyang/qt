@@ -1,40 +1,105 @@
 #include "datamgr.h"
-
-DataMgr::DataMgr(QObject *parent) :
-    QThread(parent)
+#include "datadev.h"
+DataMgr::DataMgr()
 {
-    m_pSendJob = GetJobNest();
+    m_pSendDataJob = GetJobNest();
+    assert(m_pSendDataJob);
+    p_pSendStateMsgJob = GetJobNest();
+    assert(p_pSendStateMsgJob);
 }
 DataMgr::~DataMgr()
 {
-    if(m_pSendJob){
-        delete m_pSendJob;
-        m_pSendJob = NULL;
+    if(m_pSendDataJob){
+        delete m_pSendDataJob;
+        m_pSendDataJob = NULL;
+    }
+    if(p_pSendStateMsgJob){
+        delete p_pSendStateMsgJob;
+        p_pSendStateMsgJob = NULL;
     }
 }
-void DataMgr::sentData(const Msg_* msg){
+void DataMgr::sendData(int fd,const Msg_* msg){
     //驱动任务巢
-    CJobPkg* pkg=m_pSendJob->GetJobPkg(0);
+    CJobPkg* pkg=m_pSendDataJob->GetJobPkg(0);
     assert(pkg);
 
-    Msg_* pci=(Msg_*)pkg->Alloc(sizeof(Msg_));
-    assert(pci);
-    memcpy(pci,&msg,sizeof(Msg_));
 
-    pkg->SetExecFunction(sendState);
+    SENDMSG_* pci=(SENDMSG_*)pkg->Alloc(sizeof(SENDMSG_));
+    assert(pci);
+    pci->fd = fd;
+    memcpy(pci->msg,&msg,sizeof(Msg_));
+
+    pkg->SetExecFunction(sendData_);
     pkg->SetExecParam(pci);
     pkg->SetID(7);//different thread have different source. as to this ID ,can delete the soucre.
 
-    m_pSendJob->SubmitJobPkg(pkg);
+    m_pSendDataJob->SubmitJobPkg(pkg);
+}
+void DataMgr::sendStateMsg(int fd,const Msg_* msg){
+    //驱动任务巢
+    CJobPkg* pkg=p_pSendStateMsgJob->GetJobPkg(0);
+    assert(pkg);
+
+    SENDMSG_* pci=(SENDMSG_*)pkg->Alloc(sizeof(SENDMSG_));
+    assert(pci);
+    pci->fd = fd;
+    memcpy(pci->msg,&msg,sizeof(Msg_));
+
+    pkg->SetExecFunction(sendStateMsg_);
+    pkg->SetExecParam(pci);
+    pkg->SetID(8);//different thread have different source. as to this ID ,can delete the soucre.
+
+    p_pSendStateMsgJob->SubmitJobPkg(pkg);
+}
+void DataMgr::sendData_(void* pv){
+    SENDMSG_* SendMsg = (SENDMSG_*)pv;
+    assert(SendMsg);
+
+    DataDev::getInstance()->sendData(SendMsg->fd,SendMsg->msg);
+}
+void DataMgr::sendStateMsg_(void* pv){
+    return sendData_(pv);
+}
+void DataMgr::recvData(const Msg_* msg){
+    switch(msg->type){
+    case Link_Msg:
+        //DataDev::getInstance()->m_pLinkMgr->recvLinkMsg();
+        break;
+    case Data_Msg:
+        handDataMsg();
+        break;
+    case Cmd_Msg:
+        handleCmdMsg();
+        break;
+    case Notify_Msg:
+        handleNotifyMsg();
+        break;
+    default:
+        break;
+
+    }
 }
 
-void DataMgr::sendState(void* pv){
-
-}
-void DataMgr::recvData(){
+void DataMgr::handDataMsg(){
 
 }
 
-void DataMgr::run(){//used to recv data
-    recvData();
+void DataMgr::handleNotifyMsg(){
+
 }
+
+void DataMgr::handleCmdMsg(){
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

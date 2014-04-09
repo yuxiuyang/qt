@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "network_server.h"
+#include "datadev.h"
 namespace Ui {
     class MainWindow;
 }
@@ -29,6 +30,11 @@ protected:
 private:
     Ui::MainWindow *ui;
     Network_Server m_serverNetwork;
+
+
+    DataMgr* m_pDataMgr;
+    DataDev* m_pDataDev;
+    LinkMgr* m_pLinkMgr;
 };
 
 #endif // MAINWINDOW_H

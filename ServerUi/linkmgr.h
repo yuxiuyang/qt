@@ -1,34 +1,20 @@
 #ifndef LINKMGR_H
 #define LINKMGR_H
 
-#include <QThread>
-#include "../include/link.h"
-#include "network_server.h"
+#include "../include/define.h"
 #include<algorithm>
 #include <map>
 #include <vector>
-#include "mainwindow.h"
 using namespace std;
 #define MAX_RECIEVE_BUF 1024
 
-class LinkMgr : public QThread
+class LinkMgr
 {
-Q_OBJECT
-private:
-    explicit LinkMgr(QObject *parent = 0);
 public:
+    LinkMgr();
     virtual ~LinkMgr();
-signals:
-
-public slots:
-
 
 public:
-    virtual void run();
-
-    static LinkMgr* getInstance();
-    static LinkMgr* m_instance;
-
     bool registerSocketFd(int socketFd);
     bool unregisterSocketFd(int socketFd);
 
@@ -36,19 +22,18 @@ public:
 
     Link* findClient(int clientSocket);
     bool removeClientSocket(int clientSocket);
-    int getMaxClientFd();
     void setWindow(void* win);
-private:
-    Network_Server m_serverNetwork;
-    bool m_initServerOk;
+    void getClientSocketFd(int clientFd[],int& len);
+    void getClientSocketFd(vector<int>* vec);
+    bool addClientSocketFd(int clientFd);
+    void recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error=-1);
 
+
+    int findIdentifyForwardFd(LinkSource_ source,ClientType_ type);//find Forwarded object
+private:
     map<int,Link*> m_clientConnectMsgMap;
     vector<int> m_registerClientSocketFdVec;
     bool isRegister(int socketFd);//check weather has register
-
-    int m_maxClientFd;
-
-
     void* m_window;
 };
 

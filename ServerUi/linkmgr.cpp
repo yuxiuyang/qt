@@ -1,123 +1,12 @@
 #include "linkmgr.h"
 #include <errno.h>
-LinkMgr* LinkMgr::m_instance = new LinkMgr();
-LinkMgr::LinkMgr(QObject *parent) :
-    QThread(parent)
-{
-    m_initServerOk = m_serverNetwork.init();
-    m_maxClientFd = m_serverNetwork.getServerSocketFd();
+#include "mainwindow.h"
+LinkMgr::LinkMgr(){
     m_window = NULL;
 }
-
 LinkMgr::~LinkMgr(){
-    assert(m_instance);
 }
 
-LinkMgr* LinkMgr::getInstance(){
-    return m_instance;
-}
-
-void LinkMgr::run(){
-    if(!m_initServerOk){
-        cout<<"please init server first   thread run failure"<<endl;
-        return;
-    }
-    fd_set fdSet;
-    int clientFd=-1;
-    int ret = -1;
-    struct timeval tv;
-    char recvBuf[MAX_RECIEVE_BUF];
-    char msgBuf[200]={0};
-    while(1){
-        // initialize file descriptor set
-        FD_ZERO(&fdSet);
-        FD_SET(m_serverNetwork.getServerSocketFd(), &fdSet);
-
-        // timeout setting
-       tv.tv_sec = 30000;
-       tv.tv_usec = 0;
-
-        // add active connection to fd set
-        std::map <int, Link*>::iterator iter;
-        for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
-            cout<<"add fd ="<<iter->first<<endl;
-            FD_SET(iter->first, &fdSet);
-        }
-
-        ret = select(m_maxClientFd + 1, &fdSet, NULL, NULL, &tv);
-        if (ret < 0) {
-            printf("select error\n");
-            ((MainWindow*)m_window)->appendMsg("select error");
-            break;
-        } else if (ret == 0) {
-            printf("timeout\n");
-            ((MainWindow*)m_window)->appendMsg("timeout");
-            continue;
-        }
-        ((MainWindow*)m_window)->appendMsg("select success");
-        // check every active client fd in the set
-        std::map <int, Link*>::iterator iter1;
-        for(iter1=m_clientConnectMsgMap.begin();iter1!=m_clientConnectMsgMap.end();iter1++){
-            if (FD_ISSET(iter1->first, &fdSet)) {
-                cout<<"iter1->first="<<iter1->first<<endl;
-                memset(recvBuf,0,sizeof(recvBuf));
-                ret = m_serverNetwork.recvData(iter1->first,recvBuf,sizeof(recvBuf));
-                if (ret <= 0) {        // client close
-                    printf("clientfd=%d close ret=%d,errno=%d\n", iter1->first,ret,errno);
-                    close(iter1->first);
-                    FD_CLR(iter1->first, &fdSet);
-                    removeClientSocket(iter1->first);
-                } else {        // receive data
-                    if (ret < sizeof(recvBuf)){
-                       recvBuf[ret]='\0';
-                       ((MainWindow*)m_window)->appendMsg(recvBuf);
-                       //memset(&recvBuf[ret], '\0', 1);
-                    }
-                    else{
-                       printf("maybe recv buf len is too small\n");
-                    }
-                }
-            }
-        }
-
-
-        //check serversocket is connected by other client
-        if (FD_ISSET(m_serverNetwork.getServerSocketFd(), &fdSet)) {
-            cout<<"start listen"<<endl;
-            clientFd = m_serverNetwork.waitAccept();
-            if(-1 == clientFd){
-                cout<<"clientFd=-1 accept failure errno="<<errno<<endl;
-                if(EAGAIN == errno){
-
-                }
-                //continue;
-            }
-
-            //manage client FD
-            if(!findClient(clientFd)){// not exsit
-                std::pair< std::map< int, Link* >::iterator, bool> ct;
-                ct = m_clientConnectMsgMap.insert( std::pair <int, Link*> ( clientFd,  NULL) );
-                if( ct.second ){
-                    //printf("\n m_Event_Name_Map insert Data Success....m,size=%d,this=%lu\n",m_clientConnectMsgMap.size(),this);
-                    sprintf(msgBuf,"accept client =%d success",clientFd);
-                    ((MainWindow*)m_window)->appendMsg(msgBuf);
-                    if(m_maxClientFd<clientFd){
-                        m_maxClientFd = clientFd;
-                    }
-                }else{
-                     printf("\n m_Event_Name_Map insert Data fail....\n");
-                }
-            }else{
-                cout<<"this client="<<clientFd<<"has exist"<<endl;
-            }
-
-            cout<<"accept socket success socket="<<clientFd<<endl;
-            //sysn socket
-            assert(sendToClient(clientFd));//
-       }
-
-    }
-}
 bool LinkMgr::registerSocketFd(int socketFd){
     if(isRegister(socketFd))
         return false;
@@ -153,15 +42,7 @@ Link* LinkMgr::findClient(int clientSocket){
 
     return iter==m_clientConnectMsgMap.end()?NULL:iter->second;
 }
-int LinkMgr::getMaxClientFd(){
-//    std::map <int, Link*>::iterator iter;
-//    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
-//        if(m_maxClientFd<iter->first){
-//            m_maxClientFd = iter->first;
-//        }
-//    }
-    return m_maxClientFd;
-}
+
 bool LinkMgr::removeClientSocket(int clientSocket){
     std::map <int, Link*>::iterator iter;
     iter = m_clientConnectMsgMap.find(clientSocket);//search clientFd
@@ -180,3 +61,106 @@ bool LinkMgr::removeClientSocket(int clientSocket){
 void LinkMgr::setWindow(void* win){
     m_window = win;
 }
+void LinkMgr::getClientSocketFd(int clientFd[],int& len){
+    // add active connection to fd set
+    len = 0;
+    std::map <int, Link*>::iterator iter;
+    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
+        cout<<"add fd ="<<iter->first<<endl;
+        //FD_SET(iter->first, &fdSet);
+        clientFd[len++] = iter->first;
+    }
+}
+void LinkMgr::getClientSocketFd(vector<int>* vec){
+    assert(vec);
+    std::map <int, Link*>::iterator iter;
+    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
+        cout<<"add fd ="<<iter->first<<endl;
+        //FD_SET(iter->first, &fdSet);
+        //clientFd[len++] = iter->first;
+        vec->push_back(iter->first);
+    }
+}
+
+bool LinkMgr::addClientSocketFd(int clientFd){
+    assert(clientFd>0);
+    //char msgBuf[100]={0};
+    //manage client FD
+    if(!findClient(clientFd)){// not exsit
+        std::pair< std::map< int, Link* >::iterator, bool> ct;
+        ct = m_clientConnectMsgMap.insert( std::pair <int, Link*> ( clientFd,  NULL) );
+        if( ct.second ){
+            printf("\n m_Event_Name_Map insert Data Success....m,size=%d,this=%lu\n",m_clientConnectMsgMap.size(),this);
+            //sprintf(msgBuf,"accept client =%d success",clientFd);
+            //((MainWindow*)m_window)->appendMsg(msgBuf);
+            return true;
+        }else{
+             printf("\n m_Event_Name_Map insert Data fail....\n");
+             return false;
+        }
+    }else{
+        cout<<"this client="<<clientFd<<"has exist"<<endl;
+        return false;
+    }
+    cout<<"accept socket success socket="<<clientFd<<endl;
+     return true;
+}
+void LinkMgr::recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error){
+    char msgBuf[100]={0};
+    switch(type){
+        case Connect_Close:
+            assert(clientFd>0);
+            removeClientSocket(clientFd);
+            close(clientFd);
+            sprintf(msgBuf,"connect close,clientfd=%d",clientFd);
+            break;
+        case Connect_Failure:
+            sprintf(msgBuf,"connect failure,error=%d",error);
+            break;
+        case Connect_Success:
+            assert(clientFd>0);
+            if(addClientSocketFd(clientFd)){
+
+            }
+            sprintf(msgBuf,"connect success,clientfd=%d",clientFd);
+            break;
+        case Connect_Error:
+            sprintf(msgBuf,"connect error");
+            break;
+        case Connect_Timeout:
+            sprintf(msgBuf,"connect timeout");
+            break;
+        default:
+            sprintf(msgBuf,"connect sernior error");
+            break;
+    }
+    ((MainWindow*)m_window)->appendMsg(msgBuf);
+}
+int LinkMgr::findIdentifyForwardFd(LinkSource_ source,ClientType_ type){//find Forwarded object
+    LinkSource_ tmp = Monitor_UI_Link;
+    if(source == PC_Simulator_Link){//come from pc simulator,so should find a fd from monitor moudle
+        tmp = Monitor_UI_Link;
+        
+    }else if(source == Monitor_UI_Link){
+        tmp = PC_Simulator_Link;
+    }
+    std::map <int, Link*>::iterator iter;
+    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
+        if(iter->second->comeForm == tmp && iter->second->type == type){
+            if(iter->first != iter->second->fd){
+                cout<<"may be error happend,,,,,iter->first="<<iter->first<<"iter->second->fd="<<iter->second->fd<<endl;
+                return -1;
+            }
+            return iter->first;
+        }
+    }
+    return -1;
+}
+
+
+
+
+
+
+
+

@@ -1,8 +1,9 @@
 #include "network_server.h"
 #include <assert.h>
 #include <iostream>
-using namespace std;
 #include <signal.h>
+using namespace std;
+
 Network_Server::Network_Server()
 {
     m_serverSockFd = -1;
@@ -63,23 +64,21 @@ void Network_Server::stop(){
     }
 }
 
-int Network_Server::recvData(int socket,char* buf,int len){
-    assert(buf);
-    assert(len>0);
-    return recv(socket,buf,len, 0);
+int Network_Server::recvData(int socket,Msg_* msg){
+    assert(msg);
+    return recv(socket,msg,sizeof(Msg_), 0);
 }
-int Network_Server::sendData(int socket,char* buf,int len){
-    assert(buf);
-    assert(len>0);
+int Network_Server::sendData(int socket,const Msg_* msg){
 
-
+    int len = sizeof(Msg_);
+    int total = 0;
     while(1){
-        int size = send(socket,buf,len,0);
+        int size = send(socket,msg,len,0);
         if(size<=0){
             printf("send error errno=%d\n",errno);
             return size;
         }
-
+        total += size;
         if(size<len){
             len -= size;
             continue;
@@ -87,5 +86,5 @@ int Network_Server::sendData(int socket,char* buf,int len){
             break;
         }
     }
-    return len;
+    return total;
 }

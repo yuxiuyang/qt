@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "linkmgr.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -14,14 +13,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pStart_btn->setEnabled(true);
     ui->pStop_btn->setEnabled(false);
 
-    LinkMgr::getInstance()->setWindow((void*)this);
-    //m_serverNetwork.init();
+
+    m_pDataMgr = new DataMgr();
+    m_pLinkMgr = new LinkMgr();
+    m_pLinkMgr->setWindow((void*)this);
+
+    DataDev::getInstance()->m_pLinkMgr = m_pLinkMgr;
+    DataDev::getInstance()->m_pDataMgr = m_pDataMgr;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete LinkMgr::getInstance();
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -40,7 +43,7 @@ void MainWindow::start_click(){
     ui->pStart_btn->setEnabled(false);
     ui->pStop_btn->setEnabled(true);
 
-    LinkMgr::getInstance()->start();
+    DataDev::getInstance()->start();
 //    ui->pStart_btn->setEnabled(true);
 //    ui->pStop_btn->setEnabled(false);
 //    ui->pStart_label->setText("server stop");
@@ -50,7 +53,7 @@ void MainWindow::stop_click(){
     ui->pStart_btn->setEnabled(true);
     ui->pStop_btn->setEnabled(false);
     ui->pStart_label->setText("server stop");
-    LinkMgr::getInstance()->terminate();
+    DataDev::getInstance()->terminate();
 }
 
 void MainWindow::clearConnectMsg_click(){
