@@ -7,6 +7,8 @@
 #include <string.h>
 using namespace std;
 #define MAX_DATA_BUF 120
+#define ERROR_MSG_BUF 150
+
 typedef unsigned char BYTE;
 typedef unsigned long int UNIT;
 static BYTE charConvertToHex(char a){
@@ -78,15 +80,34 @@ enum MsgType{
     Notify_Msg,
     Cmd_Msg,
     Data_Msg,
-};
+    Client_Error_Msg,
+    Server_Error_Msg,
+    Link_Msg,
+    Link_Error_Msg,
 
+};
+struct Link{
+    int fd;
+    LinkSource_ comeForm;
+    ClientType_ type;
+};
 struct Msg_{
     MsgType type;
     union{
         NotifyMsg_ notifyMsg;
         CmdMsg_    cmdMsg;
         DataMsg_   dataMsg;
+        Link       linkMsg;
+        char       errorBuf[ERROR_MSG_BUF];
     };
+};
+
+enum CONNECT_MSG_TYPE{
+    Connect_Error,
+    Connect_Timeout,
+    Connect_Success,
+    Connect_Failure,
+    Connect_Close,
 };
 
 #endif // DEFINE_H

@@ -4,11 +4,13 @@
 TARGET = ServerUi
 TEMPLATE = app
 SOURCES += main.cpp \
+    datadev.cpp \
     mainwindow.cpp \
     network_server.cpp \
     linkmgr.cpp \
     datamgr.cpp
 HEADERS += mainwindow.h \
+    datadev.h \
     network_server.h \
     ../include/define.h \
     ../include/link.h \
