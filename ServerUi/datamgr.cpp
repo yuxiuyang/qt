@@ -63,7 +63,7 @@ void DataMgr::sendStateMsg_(void* pv){
 void DataMgr::recvData(const Msg_* msg){
     switch(msg->type){
     case Link_Msg:
-        //DataDev::getInstance()->m_pLinkMgr->recvLinkMsg();
+        DataDev::getInstance()->m_pLinkMgr->recvLinkMsg(&(msg->linkMsg));
         break;
     case Data_Msg:
         handDataMsg();

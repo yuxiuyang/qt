@@ -5,6 +5,16 @@ LinkMgr::LinkMgr(){
     m_window = NULL;
 }
 LinkMgr::~LinkMgr(){
+    std::map <int, Link*>::iterator iter;
+    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
+        if(iter->second){
+            delete iter->second;
+            iter->second = NULL;
+        }
+    }
+    m_clientConnectMsgMap.clear();
+    m_registerClientSocketFdVec.clear();
+
 }
 
 bool LinkMgr::registerSocketFd(int socketFd){
@@ -48,6 +58,10 @@ bool LinkMgr::removeClientSocket(int clientSocket){
     iter = m_clientConnectMsgMap.find(clientSocket);//search clientFd
 
     if(iter != m_clientConnectMsgMap.end()){
+        if(iter->second){
+            delete iter->second;
+            iter->second = NULL;
+        }
         m_clientConnectMsgMap.erase(iter);
 
         unregisterSocketFd(clientSocket);
@@ -157,7 +171,28 @@ int LinkMgr::findIdentifyForwardFd(LinkSource_ source,ClientType_ type){//find F
     return -1;
 }
 
+void LinkMgr::recvLinkMsg(const Link* linkMsg){
+    std::map <int, Link*>::iterator iter;
+    iter = m_clientConnectMsgMap.find(linkMsg->fd);//search clientFd
 
+    if(iter == m_clientConnectMsgMap.end()){
+        cout<<"not possible,may a error"<<endl;
+        return;
+    }
+
+    if(m_clientConnectMsgMap[linkMsg->fd]){//delete old link msg
+        delete m_clientConnectMsgMap[linkMsg->fd];
+        m_clientConnectMsgMap[linkMsg->fd] = NULL;
+    }
+
+    //add new link msg
+    Link* ln = new Link();
+    ln->fd = linkMsg->fd;
+    ln->comeForm = linkMsg->comeForm;
+    ln->type = linkMsg->type;
+
+    m_clientConnectMsgMap[linkMsg->fd] = ln;
+}
 
 
 

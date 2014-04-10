@@ -27,6 +27,7 @@ public:
     void getClientSocketFd(vector<int>* vec);
     bool addClientSocketFd(int clientFd);
     void recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error=-1);
+    void recvLinkMsg(const Link* linkMsg);
 
 
     int findIdentifyForwardFd(LinkSource_ source,ClientType_ type);//find Forwarded object
