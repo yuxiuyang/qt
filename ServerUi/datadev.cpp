@@ -93,5 +93,8 @@ void DataDev::run(){
 }
 int DataDev::sendData(int fd,const Msg_* msg){
     assert(fd>0);
-    return m_serverNetwork.sendData(fd,msg);
+    m_sendMutex.lock();
+    int rel = m_serverNetwork.sendData(fd,msg);
+    m_sendMutex.unlock();
+    return rel;
 }

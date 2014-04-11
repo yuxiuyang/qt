@@ -9,6 +9,7 @@
 #include <vector>
 #include "datamgr.h"
 #include "linkmgr.h"
+ #include <QMutex>
 using namespace std;
 class DataDev : public QThread
 {
@@ -39,6 +40,8 @@ class DataDev : public QThread
         int m_maxClientFd;//client fd max
 
         vector<int> m_tmpVec;//just a tmp
+
+        QMutex m_sendMutex;//
     };
 
 #endif // DATADEV_H
