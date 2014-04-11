@@ -1,13 +1,6 @@
 #ifndef DATAMGR_H
 #define DATAMGR_H
-
-#include <QThread>
-#include "l_jn.h"
 #include "../include/define.h"
-struct SENDMSG_{
-    int fd;
-    Msg_* msg;
-};
 
 class DataMgr
 {
@@ -16,26 +9,21 @@ public:
     ~DataMgr();
 
 public:
-    void sendData(int fd,const Msg_* msg);
-    void sendStateMsg(int fd,const Msg_* msg);
-
-
     void recvData(const Msg_* msg);
 
 protected:
-    static void sendData_(void* pv);
-    static void sendStateMsg_(void* pv);
 
+    void handDataMsg(const DataMsg_* dataMsg);
+    void handleCmdMsg(const CmdMsg_* cmdMsg);
+    void handleNotifyMsg(const NotifyMsg_* notifyMsg);
 
-    void handDataMsg();
-    void handleNotifyMsg();
-    void handleCmdMsg();
+    void convertDatas(int fd,const Msg_* msg);
+
 
 
 
 private:
-    CJobNest *m_pSendDataJob;//send data task thread.
-    CJobNest *p_pSendStateMsgJob;//send state msg thread
+
 };
 
 #endif // DATAMGR_H

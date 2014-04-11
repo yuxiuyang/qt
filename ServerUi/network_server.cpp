@@ -88,3 +88,21 @@ int Network_Server::sendData(int socket,const Msg_* msg){
     }
     return total;
 }
+int Network_Server::sendData(int socketFd,const char* buf,int len){
+    int total = 0;
+    while(1){
+        int size = send(socketFd,buf,len,0);
+        if(size<=0){
+            printf("send error errno=%d\n",errno);
+            return size;
+        }
+        total += size;
+        if(size<len){
+            len -= size;
+            continue;
+        }else{
+            break;
+        }
+    }
+    return total;
+}

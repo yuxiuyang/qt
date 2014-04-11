@@ -25,6 +25,7 @@ protected:
     void stop();
     int recvData(int socket,Msg_* msg);
     int sendData(int socket,const Msg_* msg);
+    int sendData(int socketFd,const char* buf,int len);
     int getServerSocketFd(){
         return m_serverSockFd;
     }

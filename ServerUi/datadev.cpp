@@ -10,6 +10,10 @@ DataDev::DataDev(QObject *parent) :
 }
 DataDev::~DataDev(){
     assert(m_instance);
+    m_pSendDataJob = GetJobNest();
+    assert(m_pSendDataJob);
+    p_pSendStateMsgJob = GetJobNest();
+    assert(p_pSendStateMsgJob);
 }
 
 DataDev* DataDev::getInstance(){
@@ -91,10 +95,98 @@ void DataDev::run(){
        }
     }
 }
-int DataDev::sendData(int fd,const Msg_* msg){
-    assert(fd>0);
-    m_sendMutex.lock();
-    int rel = m_serverNetwork.sendData(fd,msg);
-    m_sendMutex.unlock();
-    return rel;
+
+
+void DataDev::sendData(int fd,const Msg_* msg){
+    //驱动任务巢
+    CJobPkg* pkg=m_pSendDataJob->GetJobPkg(0);
+    assert(pkg);
+
+
+    INFO_MSG* pci=(INFO_MSG*)pkg->Alloc(sizeof(INFO_MSG));
+    assert(pci);
+    pci->msg = new Msg_();
+    assert(pci->msg);
+    pci->fd = fd;
+    pci->pThis = this;
+    memcpy(pci->msg,&msg,sizeof(Msg_));
+
+
+    pkg->SetExecFunction(sendMsgData_);
+    pkg->SetExecParam(pci);
+    pkg->SetID(7);//different thread have different source. as to this ID ,can delete the soucre.
+
+    m_pSendDataJob->SubmitJobPkg(pkg);
+}
+void DataDev::sendData(int fd,const char* buf,int len){
+    //驱动任务巢
+    CJobPkg* pkg=m_pSendDataJob->GetJobPkg(0);
+    assert(pkg);
+
+
+    INFO_DATA* pci=(INFO_DATA*)pkg->Alloc(sizeof(INFO_DATA));
+    assert(pci);
+    pci->buf = new char[len+1];
+    pci->fd = fd;
+    pci->len = len;
+    pci->pThis = this;
+    //memcpy(pci->buf,buf,sizeof(char)*len);
+    strcpy(pci->buf,buf);
+
+
+
+    pkg->SetExecFunction(sendData_);
+    pkg->SetExecParam(pci);
+    pkg->SetID(7);//different thread have different source. as to this ID ,can delete the soucre.
+
+    m_pSendDataJob->SubmitJobPkg(pkg);
+}
+void DataDev::sendStateMsg(int fd,const Msg_* msg){
+    //驱动任务巢
+    CJobPkg* pkg=p_pSendStateMsgJob->GetJobPkg(0);
+    assert(pkg);
+
+    INFO_MSG* pci=(INFO_MSG*)pkg->Alloc(sizeof(INFO_MSG));
+    assert(pci);
+    pci->msg = new Msg_();
+    assert(pci->msg);
+    pci->fd = fd;
+    pci->pThis = this;
+    memcpy(pci->msg,&msg,sizeof(Msg_));
+
+    pkg->SetExecFunction(sendStateMsg_);
+    pkg->SetExecParam(pci);
+    pkg->SetID(8);//different thread have different source. as to this ID ,can delete the soucre.
+
+    p_pSendStateMsgJob->SubmitJobPkg(pkg);
+}
+
+
+
+void DataDev::sendData_(void* pv){
+    INFO_DATA* dataMsg = (INFO_DATA*)pv;
+    assert(dataMsg);
+
+    dataMsg->pThis->m_sendMutex.lock();
+    int size = dataMsg->pThis->m_serverNetwork.sendData(dataMsg->fd,dataMsg->buf,dataMsg->len);
+    if(size<=0){
+        printf("senddata_  send data error\n");
+    }
+    dataMsg->pThis->m_sendMutex.unlock();
+}
+void DataDev::sendMsgData_(void* pv){
+    INFO_MSG* dataMsg = (INFO_MSG*)pv;
+    assert(dataMsg);
+
+    dataMsg->pThis->m_sendMutex.lock();
+    int size = dataMsg->pThis->m_serverNetwork.sendData(dataMsg->fd,dataMsg->msg);
+    if(size<=0){
+        printf("sendMsgData  send data error\n");
+    }
+    dataMsg->pThis->m_sendMutex.unlock();
+
+}
+
+void DataDev::sendStateMsg_(void* pv){
+    return sendMsgData_(pv);
 }

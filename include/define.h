@@ -75,6 +75,7 @@ struct DataMsg_{
     LinkSource_ comeForm;
     ClientType_ type;
     BYTE buf[MAX_DATA_BUF];
+    int buf_len;
 };
 enum MsgType{
     Notify_Msg,
