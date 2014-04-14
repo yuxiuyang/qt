@@ -20,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     DataDev::getInstance()->m_pLinkMgr = m_pLinkMgr;
     DataDev::getInstance()->m_pDataMgr = m_pDataMgr;
+
+
+
+    m_dataType = SPO2_CLIENT;
 }
 
 MainWindow::~MainWindow()
@@ -69,3 +73,13 @@ void MainWindow::appendMsg(char* msg){
 void MainWindow::exit_click(){
     close();
 }
+void MainWindow::appendMsg(ClientType_ type,char* msg){
+    ui->pDisplay_txt->append(msg);
+}
+
+
+
+
+
+
+

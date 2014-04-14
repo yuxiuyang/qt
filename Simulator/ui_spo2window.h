@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'spo2window.ui'
 **
-** Created: Thu Feb 13 15:24:38 2014
+** Created: Mon Apr 14 15:10:02 2014
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -115,6 +115,7 @@ public:
         pMsg_Txt->setObjectName(QString::fromUtf8("pMsg_Txt"));
         pMsg_Txt->setEnabled(false);
         pMsg_Txt->setGeometry(QRect(30, 20, 361, 161));
+        pMsg_Txt->setOpenExternalLinks(true);
         pGenerateData_check = new QCheckBox(Spo2Window);
         pGenerateData_check->setObjectName(QString::fromUtf8("pGenerateData_check"));
         pGenerateData_check->setGeometry(QRect(410, 160, 161, 22));

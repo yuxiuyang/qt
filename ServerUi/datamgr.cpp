@@ -1,5 +1,6 @@
 #include "datamgr.h"
 #include "datadev.h"
+#include "mainwindow.h"
 DataMgr::DataMgr()
 {
 
@@ -41,6 +42,8 @@ void DataMgr::recvData(const Msg_* msg){
 
     int convertFd = DataDev::getInstance()->m_pLinkMgr->findIdentifyForwardFd(comeFrom,type);
     convertDatas(convertFd,msg);
+
+    return;
 }
 
 void DataMgr::handDataMsg(const DataMsg_* dataMsg){
@@ -52,6 +55,7 @@ void DataMgr::handDataMsg(const DataMsg_* dataMsg){
 //
 //      //this is data msg ,and should convert to Monitor or ui
 //     DataDev::getInstance()->sendData(socketFd,dataMsg->buf,dataMsg->buf_len);//convert to monitor or ui
+
 }
 
 void DataMgr::handleCmdMsg(const CmdMsg_* cmdMsg){
@@ -60,11 +64,19 @@ void DataMgr::handleCmdMsg(const CmdMsg_* cmdMsg){
 void DataMgr::handleNotifyMsg(const NotifyMsg_* notifyMsg){
 }
 
-
-
 void DataMgr::convertDatas(int fd,const Msg_* msg){
     assert(fd>0);
-    DataDev::getInstance()->sendData(fd,msg);//
+    //DataDev::getInstance()->sendData(fd,msg);//
+
+    if(msg->type == Data_Msg){
+        char buf[1000]={0};
+        int i=0;
+        for(;i<msg->dataMsg.buf_len;i++){
+            sprintf(buf+i,"%02x ",msg->dataMsg.buf[i]);
+        }
+        buf[i] = '\0';
+        ((MainWindow*)(DataDev::getInstance()->m_pLinkMgr->m_window))->appendMsg(SPO2_CLIENT,buf);
+    }
 }
 
 

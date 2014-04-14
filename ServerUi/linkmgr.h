@@ -14,6 +14,8 @@ public:
     LinkMgr();
     virtual ~LinkMgr();
 
+    void* m_window;
+
 public:
     bool registerSocketFd(int socketFd);
     bool unregisterSocketFd(int socketFd);
@@ -35,7 +37,6 @@ private:
     map<int,Link*> m_clientConnectMsgMap;
     vector<int> m_registerClientSocketFdVec;
     bool isRegister(int socketFd);//check weather has register
-    void* m_window;
 };
 
 #endif // LINKMGR_H

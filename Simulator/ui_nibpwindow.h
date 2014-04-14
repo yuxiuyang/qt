@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'nibpwindow.ui'
 **
-** Created: Thu Feb 13 15:24:38 2014
+** Created: Mon Apr 14 15:19:25 2014
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -57,8 +57,11 @@ public:
         NibpWindow->resize(627, 482);
         pMsg_Txt = new QTextBrowser(NibpWindow);
         pMsg_Txt->setObjectName(QString::fromUtf8("pMsg_Txt"));
-        pMsg_Txt->setEnabled(false);
+        pMsg_Txt->setEnabled(true);
         pMsg_Txt->setGeometry(QRect(30, 20, 361, 161));
+        pMsg_Txt->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        pMsg_Txt->setAutoFormatting(QTextEdit::AutoNone);
+        pMsg_Txt->setReadOnly(false);
         pExit_btn = new QPushButton(NibpWindow);
         pExit_btn->setObjectName(QString::fromUtf8("pExit_btn"));
         pExit_btn->setGeometry(QRect(520, 20, 99, 32));
@@ -121,6 +124,20 @@ public:
         pShowReadData_check = new QCheckBox(test);
         pShowReadData_check->setObjectName(QString::fromUtf8("pShowReadData_check"));
         pShowReadData_check->setGeometry(QRect(140, 10, 141, 27));
+        label->raise();
+        label_2->raise();
+        label_3->raise();
+        pFre_edit->raise();
+        pTm_edit->raise();
+        pRc_edit->raise();
+        pFreOk_btn->raise();
+        pRcCancel_btn->raise();
+        pFreCancel_btn->raise();
+        pRcOk_btn->raise();
+        pST_check->raise();
+        pStatistics_txt->raise();
+        pShowReadData_check->raise();
+        pMsg_Txt->raise();
         pConnect_btn = new QPushButton(NibpWindow);
         pConnect_btn->setObjectName(QString::fromUtf8("pConnect_btn"));
         pConnect_btn->setGeometry(QRect(400, 70, 111, 32));

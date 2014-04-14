@@ -242,6 +242,9 @@
      <height>161</height>
     </rect>
    </property>
+   <property name="openExternalLinks">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QCheckBox" name="pGenerateData_check">
    <property name="geometry">

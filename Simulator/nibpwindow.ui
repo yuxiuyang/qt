@@ -15,7 +15,7 @@
   </property>
   <widget class="QTextBrowser" name="pMsg_Txt">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -24,6 +24,15 @@
      <width>361</width>
      <height>161</height>
     </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="autoFormatting">
+    <set>QTextEdit::AutoNone</set>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pExit_btn">
@@ -268,6 +277,20 @@
      <string>show read data</string>
     </property>
    </widget>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>pFre_edit</zorder>
+   <zorder>pTm_edit</zorder>
+   <zorder>pRc_edit</zorder>
+   <zorder>pFreOk_btn</zorder>
+   <zorder>pRcCancel_btn</zorder>
+   <zorder>pFreCancel_btn</zorder>
+   <zorder>pRcOk_btn</zorder>
+   <zorder>pST_check</zorder>
+   <zorder>pStatistics_txt</zorder>
+   <zorder>pShowReadData_check</zorder>
+   <zorder>pMsg_Txt</zorder>
   </widget>
   <widget class="QPushButton" name="pConnect_btn">
    <property name="geometry">

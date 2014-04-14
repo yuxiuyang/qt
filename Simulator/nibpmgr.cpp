@@ -29,6 +29,9 @@ void NibpMgr::onTimer(){
     read();
     display();
 
+    //send to data  to server
+
+
 }
 void NibpMgr::display(){
     if(!BasicMgr::test()) return; // have not start test

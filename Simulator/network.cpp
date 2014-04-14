@@ -43,3 +43,47 @@ bool Network::disConnect(){
     close(m_sockFd);
     return true;
 }
+
+
+int Network::recvData(int socket,Msg_* msg){
+    assert(msg);
+    return recv(socket,msg,sizeof(Msg_), 0);
+}
+int Network::sendData(int socket,const Msg_* msg){
+
+    int len = sizeof(Msg_);
+    int total = 0;
+    while(1){
+        int size = send(socket,msg,len,0);
+        if(size<=0){
+            printf("send error errno=%d\n",errno);
+            return size;
+        }
+        total += size;
+        if(size<len){
+            len -= size;
+            continue;
+        }else{
+            break;
+        }
+    }
+    return total;
+}
+int Network::sendData(int socketFd,const char* buf,int len){
+    int total = 0;
+    while(1){
+        int size = send(socketFd,buf,len,0);
+        if(size<=0){
+            printf("send error errno=%d\n",errno);
+            return size;
+        }
+        total += size;
+        if(size<len){
+            len -= size;
+            continue;
+        }else{
+            break;
+        }
+    }
+    return total;
+}

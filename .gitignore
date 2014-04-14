@@ -1,7 +1,26 @@
-#忽略gitignore文件  
-.gitignore  
-#忽略后缀名为.o和.a的文件  
-*.[oa] moc_*.* 
-#显示指定忽略名称为main的文件  
-Simulator
-ServerUi
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+ServerUi/ServerUi
+
+
+
+

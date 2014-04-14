@@ -3,19 +3,11 @@ DataDev* DataDev::m_instance = new DataDev();
 DataDev::DataDev(QObject *parent) :
         QThread(parent)
 {
-    m_initServerOk = m_serverNetwork.init();
-    m_maxClientFd = m_serverNetwork.getServerSocketFd();
-    m_pDataMgr = NULL;
-    m_pLinkMgr = NULL;
-
     assert(m_instance);
-    m_pSendDataJob = GetJobNest();
-    assert(m_pSendDataJob);
-    p_pSendStateMsgJob = GetJobNest();
-    assert(p_pSendStateMsgJob);
+    m_pDataJob = GetJobNest();
+    assert(m_pDataJob);
 }
 DataDev::~DataDev(){
-
 }
 
 DataDev* DataDev::getInstance(){

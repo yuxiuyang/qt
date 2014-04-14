@@ -22,6 +22,7 @@ public Q_SLOTS:
     void clearDisplayMsg_click();
 
     void appendMsg(char* msg);
+    void appendMsg(ClientType_ type,char* msg);
 
 
 protected:
@@ -35,6 +36,9 @@ private:
     DataMgr* m_pDataMgr;
     DataDev* m_pDataDev;
     LinkMgr* m_pLinkMgr;
+
+
+    ClientType_ m_dataType;
 };
 
 #endif // MAINWINDOW_H
