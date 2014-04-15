@@ -1,4 +1,5 @@
 #include "datadev.h"
+#include "mainwindow.h"
 DataDev* DataDev::m_instance = new DataDev();
 DataDev::DataDev(QObject *parent) :
         QThread(parent)
@@ -21,12 +22,13 @@ DataDev* DataDev::getInstance(){
     return m_instance;
 }
 void DataDev::run(){
-    cout<<"start run ........\n";
-    while(1){
-        cout<<"hhhhhhhhhhhh"<<endl;
-        sleep(2);
-    }
-    //recvData();
+    //cout<<"start run ........\n";
+    ((MainWindow*)m_pLinkMgr->m_window)->appendMsg("start run ........");
+//    while(1){
+//        cout<<"hhhhhhhhhhhh"<<endl;
+//        sleep(2);
+//    }
+    recvData();
 }
 void DataDev::recvData(){
     if(!m_initServerOk){
@@ -39,30 +41,31 @@ void DataDev::recvData(){
     struct timeval tv;
     Msg_  recvMsg;
     int maxFd = -1;
+
+    char tmpbuf[100]={0};
     while(1){
         // initialize file descriptor set
         FD_ZERO(&fdSet);
         FD_SET(m_serverNetwork.getServerSocketFd(), &fdSet);
         maxFd = m_serverNetwork.getServerSocketFd();
         // timeout setting
-       tv.tv_sec = 3000000;
+       tv.tv_sec = 3;
        tv.tv_usec = 0;
 
        m_tmpVec.clear();
         // add active connection to fd set
        m_pLinkMgr->getClientSocketFd(&m_tmpVec);
-       if(m_tmpVec.empty()){
-           sleep(1);//not fd needed to listen.
-           continue;
-       }
        for(int i=0;i<m_tmpVec.size();i++){
+           cout<<"add fd="<<m_tmpVec[i]<<endl;
            FD_SET(m_tmpVec[i], &fdSet);
            if(maxFd<m_tmpVec[i]){
                maxFd = m_tmpVec[i];
            }
        }
-
+((MainWindow*)m_pLinkMgr->m_window)->appendMsg("select start ........");
         ret = select(maxFd + 1, &fdSet, NULL, NULL, &tv);
+        //cout<<"select succuss  ret="<<ret<<endl;
+        ((MainWindow*)m_pLinkMgr->m_window)->appendMsg("select succuss ........");
         if (ret < 0) {
             m_pLinkMgr->recvLinkMsg(Connect_Error,-1);
             sleep(1);
@@ -86,6 +89,9 @@ void DataDev::recvData(){
                     //((MainWindow*)m_window)->appendMsg(recvBuf);
                     //m_pDataMgr->Rec
                        //memset(&recvBuf[ret], '\0', 1);
+                    cout<<"server   success rec data from client     fd="<<m_tmpVec[i]<<endl;
+                    sprintf(tmpbuf,"server success recv data fd=%d",m_tmpVec[i]);
+                    ((MainWindow*)m_pLinkMgr->m_window)->appendMsg(tmpbuf);
                     m_pDataMgr->recvData(&recvMsg);
                 }
             }
@@ -104,6 +110,8 @@ void DataDev::recvData(){
                 }
                 continue;
             }
+            sprintf(tmpbuf,"connect success socketfd=%d",clientFd);
+            ((MainWindow*)m_pLinkMgr->m_window)->appendMsg(tmpbuf);
             m_pLinkMgr->recvLinkMsg(Connect_Success,clientFd);
        }
     }

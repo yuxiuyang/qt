@@ -30,7 +30,7 @@ DataDev* DataDev::getInstance(){
 }
 void DataDev::run(){//device recv data
     cout<<"run start"<<endl;
-    recvData();
+    //recvData();
     cout<<"run end.."<<endl;
 }
 
@@ -76,7 +76,7 @@ void DataDev::recvData(){
                     removeClientFd(m_clientFdVec[i]);
                     FD_CLR(m_clientFdVec[i], &fdSet);
                 } else {        // receive data
-
+                    cout<<"recv data success  fd="<<m_clientFdVec[i]<<endl;
                     //((MainWindow*)m_window)->appendMsg(recvBuf);
                     m_pDataMgr->recvLinkData(&recvMsg);
                 }
@@ -135,21 +135,27 @@ void DataDev::sendData_(void* pv){
     assert(dataMsg);
 
     dataMsg->pThis->m_sendMutex.lock();
-//    int size = dataMsg->pThis->m_serverNetwork.sendData(dataMsg->fd,dataMsg->buf,dataMsg->len);
-//    if(size<=0){
-//        printf("senddata_  send data error\n");
-//    }
+
+
+    int size = send(dataMsg->fd,dataMsg->buf,dataMsg->len,0);
+    if(size != dataMsg->len){
+         printf("send error errno=%d\n",errno);
+     }
+
     dataMsg->pThis->m_sendMutex.unlock();
 }
 void DataDev::sendMsgData_(void* pv){
     INFO_MSG* dataMsg = (INFO_MSG*)pv;
     assert(dataMsg);
 
+    cout<<"start send msg data fd="<<dataMsg->fd<<endl;
     dataMsg->pThis->m_sendMutex.lock();
-//    int size = dataMsg->pThis->m_serverNetwork.sendData(dataMsg->fd,dataMsg->msg);
-//    if(size<=0){
-//        printf("sendMsgData  send data error\n");
-//    }
+    int len = sizeof(Msg_);
+    int size = send(dataMsg->fd,&dataMsg->msg,len,0);
+    if(size != len){
+        printf("send error errno=%d\n",errno);
+    }
+
     dataMsg->pThis->m_sendMutex.unlock();
 
 }

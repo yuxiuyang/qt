@@ -175,11 +175,17 @@ void NibpWindow::startTestCheckStateChanged(int state){
     }
 }
 void NibpWindow::genarateNewDataCheckStateChanged(int state){
-    if(ui->pGenerateData_check->isChecked()){
-        m_nibpMgr->generateTestFile();
-        cout<<"generate new data ok"<<endl;
+//    if(ui->pGenerateData_check->isChecked()){
+//        m_nibpMgr->generateTestFile();
+//        cout<<"generate new data ok"<<endl;
+//    }
+    BYTE test[4];
+    for(int i=0;i<4;i++){
+        test[i] = i;
     }
+    m_nibpMgr->sendData(test,4);
 }
+
 
 void NibpWindow::showReadDataCheckStateChanged(int state){
         m_nibpMgr->setShowDataSign(ui->pShowReadData_check->isChecked());

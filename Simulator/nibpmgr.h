@@ -15,6 +15,8 @@ public:
         m_Ui = win;
     }
     void display();
+
+    void sendData(BYTE* msg,int len);
 protected:
 
 
