@@ -30,7 +30,7 @@ DataDev* DataDev::getInstance(){
 }
 void DataDev::run(){//device recv data
     cout<<"run start"<<endl;
-    //recvData();
+    recvData();
     cout<<"run end.."<<endl;
 }
 
@@ -76,9 +76,9 @@ void DataDev::recvData(){
                     removeClientFd(m_clientFdVec[i]);
                     FD_CLR(m_clientFdVec[i], &fdSet);
                 } else {        // receive data
-                    cout<<"recv data success  fd="<<m_clientFdVec[i]<<endl;
+                    cout<<"client recv data success  fd="<<m_clientFdVec[i]<<endl;
                     //((MainWindow*)m_window)->appendMsg(recvBuf);
-                    m_pDataMgr->recvLinkData(&recvMsg);
+                    //m_pDataMgr->recvLinkData(&recvMsg);
                 }
             }
         }

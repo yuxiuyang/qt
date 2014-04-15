@@ -62,16 +62,16 @@ void DataDev::recvData(){
                maxFd = m_tmpVec[i];
            }
        }
-((MainWindow*)m_pLinkMgr->m_window)->appendMsg("select start ........");
+//((MainWindow*)m_pLinkMgr->m_window)->appendMsg("select start ........");
         ret = select(maxFd + 1, &fdSet, NULL, NULL, &tv);
         //cout<<"select succuss  ret="<<ret<<endl;
-        ((MainWindow*)m_pLinkMgr->m_window)->appendMsg("select succuss ........");
+        //((MainWindow*)m_pLinkMgr->m_window)->appendMsg("select succuss ........");
         if (ret < 0) {
             m_pLinkMgr->recvLinkMsg(Connect_Error,-1);
             sleep(1);
             continue;
         } else if (ret == 0) {
-            m_pLinkMgr->recvLinkMsg(Connect_Timeout,-1);
+            //m_pLinkMgr->recvLinkMsg(Connect_Timeout,-1);
             continue;
         }
 
@@ -92,7 +92,21 @@ void DataDev::recvData(){
                     cout<<"server   success rec data from client     fd="<<m_tmpVec[i]<<endl;
                     sprintf(tmpbuf,"server success recv data fd=%d",m_tmpVec[i]);
                     ((MainWindow*)m_pLinkMgr->m_window)->appendMsg(tmpbuf);
-                    m_pDataMgr->recvData(&recvMsg);
+
+                    BYTE buf[4];
+                    for(int i=0;i<4;i++){
+                        buf[i]=i+10;
+                    }
+                    Msg_ msg;
+                    msg.type = Data_Msg;
+                    msg.dataMsg.type = NIBP_CLIENT;
+                    memcpy(msg.dataMsg.buf,buf,4);
+                    msg.dataMsg.buf_len = 4;
+                    msg.dataMsg.comeForm = PC_Simulator_Link;
+
+                    cout<<"nibpmgr  senddata"<<endl;
+                    //DataDev::getInstance()->sendData(m_tmpVec[i],&msg);
+                   // m_pDataMgr->recvData(&recvMsg);
                 }
             }
         }
