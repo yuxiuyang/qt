@@ -16,7 +16,7 @@ public:
 
 public:
     bool init();
-    bool connect();
+    int connect();
     bool disConnect();
 
     int recvData(int socket,Msg_* msg);

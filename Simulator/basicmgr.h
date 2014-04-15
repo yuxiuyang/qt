@@ -80,6 +80,9 @@ public:
     bool disConnect();
 
     bool sendTestData(const char* buf,int len);
+
+
+    void analyseCmd(int cmd,void* wparam,void* lparam);
 protected:
     bool openFile(const char* filename);
     bool isOpenFile();

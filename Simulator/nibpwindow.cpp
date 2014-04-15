@@ -3,6 +3,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <iostream>
+#include "datadev.h"
 using namespace std;
 NibpWindow::NibpWindow(QWidget *parent) :
     QDialog(parent),

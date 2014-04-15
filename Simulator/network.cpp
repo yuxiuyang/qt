@@ -26,7 +26,7 @@ bool Network::init(){
     return true;
 }
 
-bool Network::connect(){
+int Network::connect(){
     init();
     cout<<"connect m_sockFd="<<m_sockFd<<endl;
 
@@ -34,12 +34,13 @@ bool Network::connect(){
     {
         //printf("connect fail !\r\n");
         cout<<"connect fail errno="<<errno<<endl;
-        return false;
+        m_sockFd = -1;
     }
     printf("connect ok !\r\n");
-    return true;
+    return m_sockFd;
 }
 bool Network::disConnect(){
+    cout<<"close socket fd="<<m_sockFd<<endl;
     close(m_sockFd);
     return true;
 }

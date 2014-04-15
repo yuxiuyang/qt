@@ -7,7 +7,7 @@ public:
     NetDev();
     virtual ~NetDev();
     virtual bool init()=0;
-    virtual bool connect()=0;
+    virtual int connect()=0;
     virtual bool disConnect()=0;
 public:
     int getSockFd(){

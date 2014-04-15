@@ -54,6 +54,8 @@ protected:
         static void sendData_(void* pv);
         static void sendStateMsg_(void* pv);
 
+        void recvData();
+
 private:
         static DataDev* m_instance;
         Network_Server m_serverNetwork;

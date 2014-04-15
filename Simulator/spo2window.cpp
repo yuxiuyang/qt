@@ -159,6 +159,7 @@ void Spo2Window::disConnectNetwork(){
     ui->pConnect_btn->setEnabled(true);
     ui->pDisConnect_btn->setEnabled(false);
 
+    m_spo2Mgr->disConnect();
 }
 void Spo2Window::sendTestData(){
     char buf[]="spo2 window data";

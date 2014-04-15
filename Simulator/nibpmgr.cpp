@@ -10,7 +10,6 @@ NibpMgr::NibpMgr()
     gettimeofday(&m_tStartTimer,NULL);
 
     m_network = new Network();
-    //m_network->init();
     assert(m_network);
     assert(openFile("datafile/spo2data.txt"));
 }

@@ -8,7 +8,6 @@ DataDev::DataDev(QObject *parent) :
     m_pDataMgr = NULL;
     m_pLinkMgr = NULL;
 
-    assert(m_instance);
     m_pSendDataJob = GetJobNest();
     assert(m_pSendDataJob);
     p_pSendStateMsgJob = GetJobNest();
@@ -22,6 +21,14 @@ DataDev* DataDev::getInstance(){
     return m_instance;
 }
 void DataDev::run(){
+    cout<<"start run ........\n";
+    while(1){
+        cout<<"hhhhhhhhhhhh"<<endl;
+        sleep(2);
+    }
+    //recvData();
+}
+void DataDev::recvData(){
     if(!m_initServerOk){
         cout<<"please init server first   thread run failure"<<endl;
         return;
@@ -44,6 +51,10 @@ void DataDev::run(){
        m_tmpVec.clear();
         // add active connection to fd set
        m_pLinkMgr->getClientSocketFd(&m_tmpVec);
+       if(m_tmpVec.empty()){
+           sleep(1);//not fd needed to listen.
+           continue;
+       }
        for(int i=0;i<m_tmpVec.size();i++){
            FD_SET(m_tmpVec[i], &fdSet);
            if(maxFd<m_tmpVec[i]){
@@ -97,7 +108,6 @@ void DataDev::run(){
        }
     }
 }
-
 
 void DataDev::sendData(int fd,const Msg_* msg){
     //驱动任务巢

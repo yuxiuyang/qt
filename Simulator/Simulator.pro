@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     nibpwindow.cpp \
     nibpmgr.cpp \
     ecgwindow.cpp \
-    datadev.cpp
+    datadev.cpp \
+    datamgr.cpp
 HEADERS += mainwindow.h \
     mgrdev.h \
     basicmgr.h \
@@ -31,13 +32,12 @@ HEADERS += mainwindow.h \
     nibpwindow.h \
     nibpmgr.h \
     ecgwindow.h \
-    datadev.h
+    datadev.h \
+    datamgr.h
 FORMS += mainwindow.ui \
     spo2window.ui \
     nibpwindow.ui \
     ecgwindow.ui
-
-
 INCLUDEPATH += $$quote(../thread_task)
 LIBS += -L../thread_task/Debug \
     -lthread_task

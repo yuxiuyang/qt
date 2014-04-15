@@ -53,7 +53,7 @@ enum ClientType_{
     ECG_CLIENT,
     SPO2_CLIENT,
     CO2_CLIENT,
-    NIBP_CLINET,
+    NIBP_CLIENT,
     IBPCO_CLIENT,
     CMD_CLIENT,//命令参数
     DISPLAY_CLIENT,

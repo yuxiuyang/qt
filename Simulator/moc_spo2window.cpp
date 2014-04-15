@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'spo2window.h'
 **
-** Created: Mon Apr 14 16:24:28 2014
+** Created: Tue Apr 15 15:53:26 2014
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
