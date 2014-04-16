@@ -64,7 +64,7 @@ void MainWindow::clearConnectMsg_click(){
 void MainWindow::clearDisplayMsg_click(){
     ui->pDisplay_txt->clear();
 }
-void MainWindow::appendMsg(char* msg){
+void MainWindow::appendMsg(const char* msg){
     ui->pConnectMsg_txt->append(msg);
 }
 void MainWindow::exit_click(){

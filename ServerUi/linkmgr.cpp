@@ -118,15 +118,15 @@ void LinkMgr::getClientSocketFd(vector<int>* vec){
 
 bool LinkMgr::addClientSocketFd(int clientFd){
     assert(clientFd>0);
-    //char msgBuf[100]={0};
+    char msgBuf[100]={0};
     //manage client FD
     if(!findClient(clientFd)){// not exsit
         std::pair< std::map< int, Link* >::iterator, bool> ct;
         ct = m_clientConnectMsgMap.insert( std::pair <int, Link*> ( clientFd,  NULL) );
         if( ct.second ){
             //printf("\n m_Event_Name_Map insert Data Success....m,size=%d,this=%lu\n",m_clientConnectMsgMap.size(),this);
-            //sprintf(msgBuf,"accept client =%d success",clientFd);
-            //((MainWindow*)m_window)->appendMsg(msgBuf);
+            sprintf(msgBuf,"accept client =%d success",clientFd);
+            ((MainWindow*)m_window)->appendMsg(msgBuf);
             DataDev::getInstance()->addFd(clientFd);
             return true;
         }else{

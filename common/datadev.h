@@ -43,7 +43,7 @@ class DataDev : public QThread
 
         static DataDev* getInstance();
 
-        void sendData(int fd,const char* buf,int len);
+        void sendData(int fd,const BYTE* buf,int len);
 
         void setCallback(void(*callback)(int)){
             CallBack_ = callback;

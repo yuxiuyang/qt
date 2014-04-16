@@ -29,6 +29,7 @@ void DataMgr::recvData(int socket){
     }
 
     char tmpbuf[100]={0};
+    string strBuf = "";
     int len = recv(socket,&pThis->m_recvBuf,sizeof(pThis->m_recvBuf),0);
     if (len <= 0) {        // client close
           pThis->m_pLinkMgr->recvLinkMsg(Connect_Close,socket);
@@ -37,8 +38,12 @@ void DataMgr::recvData(int socket){
           //FD_CLR(m_tmpVec[i], &fdSet);
      } else {        // receive data
            cout<<"server   success rec data from client     fd="<<socket<<endl;
-           sprintf(tmpbuf,"server success recv data fd=%d",socket);
-           ((MainWindow*)pThis->m_pLinkMgr->m_window)->appendMsg(tmpbuf);
+           //sprintf(tmpbuf,"server success recv data fd=%d",socket);
+         for(int i=0;i<len;i++){
+             sprintf(tmpbuf,"%02x ",tmpbuf[i]);
+             strBuf += tmpbuf;
+         }
+           ((MainWindow*)pThis->m_pLinkMgr->m_window)->appendMsg(strBuf.c_str());
 //
 //                        BYTE buf[4];
 //                        for(int i=0;i<4;i++){

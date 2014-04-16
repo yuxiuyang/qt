@@ -21,7 +21,7 @@ public Q_SLOTS:
     void clearConnectMsg_click();
     void clearDisplayMsg_click();
 
-    void appendMsg(char* msg);
+    void appendMsg(const char* msg);
     void appendMsg(ClientType_ type,char* msg);
 
 

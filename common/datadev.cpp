@@ -78,7 +78,7 @@ void DataDev::recvData(){
     }
 }
 
-void DataDev::sendData(int fd,const char* buf,int len){
+void DataDev::sendData(int fd,const BYTE* buf,int len){
     //驱动任务巢
     CJobPkg* pkg=m_pDataJob->GetJobPkg(0);
     assert(pkg);
@@ -90,8 +90,8 @@ void DataDev::sendData(int fd,const char* buf,int len){
     pci->fd = fd;
     pci->len = len;
     pci->pThis = this;
-    //memcpy(pci->buf,buf,sizeof(char)*len);
-    strcpy(pci->buf,buf);
+    memcpy(pci->buf,buf,sizeof(BYTE)*len);
+    //strcpy(pci->buf,buf);
 
 
 

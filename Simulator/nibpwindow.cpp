@@ -3,7 +3,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <iostream>
-#include "datadev.h"
+#include "../common/datadev.h"
 using namespace std;
 NibpWindow::NibpWindow(QWidget *parent) :
     QDialog(parent),
@@ -182,7 +182,9 @@ void NibpWindow::genarateNewDataCheckStateChanged(int state){
     BYTE test[4];
     for(int i=0;i<4;i++){
         test[i] = i;
+        printf("%02x ",test[i]);
     }
+    printf("\n");
     m_nibpMgr->sendData(test,4);
 }
 
