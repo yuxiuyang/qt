@@ -14,7 +14,7 @@ class LinkMgr
 public:
     LinkMgr();
     virtual ~LinkMgr();
-
+    
     void* m_window;
 
 public:

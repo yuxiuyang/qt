@@ -1,7 +1,7 @@
 #include "nibpmgr.h"
 #include "mgrdev.h"
 #include "nibpwindow.h"
-#include "datadev.h"
+#include "../common/datadev.h"
 #include "../include/define.h"
 #define REFRESH_TIME 30*1000 //ms
 NibpMgr::NibpMgr()
@@ -34,7 +34,7 @@ void NibpMgr::sendData(BYTE* buf,int len){
     msg.dataMsg.comeForm = PC_Simulator_Link;
 
     cout<<"nibpmgr  senddata"<<endl;
-    DataDev::getInstance()->sendData(m_network->getSockFd(),&msg);
+    //DataDev::getInstance()->sendData(m_network->getSockFd(),&msg);
 }
 
 void NibpMgr::onTimer(){

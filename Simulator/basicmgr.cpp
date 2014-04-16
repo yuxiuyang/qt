@@ -1,7 +1,7 @@
 #include "basicmgr.h"
 #include <errno.h>
 #include <iostream>
-#include "datadev.h"
+#include "../common/datadev.h"
 using namespace std;
 BasicMgr::BasicMgr():m_dataQueue(MAX_BUF)
 {
@@ -155,11 +155,11 @@ bool BasicMgr::connect(){
         cout<<"connect failure"<<endl;
         return false;
     }
-    return DataDev::getInstance()->addClientFd(fd);
+    return DataDev::getInstance()->addFd(fd);
 }
 
 bool BasicMgr::disConnect(){
-    DataDev::getInstance()->removeClientFd(m_network->getSockFd());
+    DataDev::getInstance()->removeFd(m_network->getSockFd());
     return m_network->disConnect();
 }
 bool BasicMgr::sendTestData(const char* buf,int len){

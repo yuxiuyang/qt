@@ -1,15 +1,15 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'datadev.h'
+** Meta object code from reading C++ file 'datamgr.h'
 **
-** Created: Wed Apr 16 16:29:08 2014
+** Created: Thu Jan 23 16:51:27 2014
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../common/datadev.h"
+#include "datamgr.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'datadev.h' doesn't include <QObject>."
+#error "The header file 'datamgr.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
 #error "This file was generated using the moc from 4.6.2. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_DataDev[] = {
+static const uint qt_meta_data_DataMgr[] = {
 
  // content:
        4,       // revision
@@ -33,33 +33,33 @@ static const uint qt_meta_data_DataDev[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_DataDev[] = {
-    "DataDev\0"
+static const char qt_meta_stringdata_DataMgr[] = {
+    "DataMgr\0"
 };
 
-const QMetaObject DataDev::staticMetaObject = {
-    { &QThread::staticMetaObject, qt_meta_stringdata_DataDev,
-      qt_meta_data_DataDev, 0 }
+const QMetaObject DataMgr::staticMetaObject = {
+    { &QThread::staticMetaObject, qt_meta_stringdata_DataMgr,
+      qt_meta_data_DataMgr, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &DataDev::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &DataMgr::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *DataDev::metaObject() const
+const QMetaObject *DataMgr::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *DataDev::qt_metacast(const char *_clname)
+void *DataMgr::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_DataDev))
-        return static_cast<void*>(const_cast< DataDev*>(this));
+    if (!strcmp(_clname, qt_meta_stringdata_DataMgr))
+        return static_cast<void*>(const_cast< DataMgr*>(this));
     return QThread::qt_metacast(_clname);
 }
 
-int DataDev::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int DataMgr::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QThread::qt_metacall(_c, _id, _a);
     if (_id < 0)

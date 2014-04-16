@@ -8,13 +8,19 @@ SOURCES += main.cpp \
     network_server.cpp \
     linkmgr.cpp \
     datamgr.cpp \
-    ../../qt/common/datadev.cpp
+    ../common/datadev.cpp \
+    linkmgr.cpp
 HEADERS += mainwindow.h \
-    network_server.h \
+    datadev.h \
+    ../include/define.h \
+    ../include/link.h \
     linkmgr.h \
+    ../common/linkmgr.h \
+    ../common/datadev.h \
+    network_server.h \
+    mainwindow.h \
     datamgr.h \
-    ../../qt/common/datadev.h \
-    ../../qt/include/define.h
+    linkmgr.h
 FORMS += mainwindow.ui
 INCLUDEPATH += $$quote(../thread_task)
 LIBS += -L../thread_task/Debug \

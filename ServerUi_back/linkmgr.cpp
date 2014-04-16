@@ -124,7 +124,7 @@ bool LinkMgr::addClientSocketFd(int clientFd){
         std::pair< std::map< int, Link* >::iterator, bool> ct;
         ct = m_clientConnectMsgMap.insert( std::pair <int, Link*> ( clientFd,  NULL) );
         if( ct.second ){
-            //printf("\n m_Event_Name_Map insert Data Success....m,size=%d,this=%lu\n",m_clientConnectMsgMap.size(),this);
+            printf("\n m_Event_Name_Map insert Data Success....m,size=%d,this=%lu\n",m_clientConnectMsgMap.size(),this);
             //sprintf(msgBuf,"accept client =%d success",clientFd);
             //((MainWindow*)m_window)->appendMsg(msgBuf);
             DataDev::getInstance()->addFd(clientFd);
@@ -175,7 +175,7 @@ int LinkMgr::findIdentifyForwardFd(LinkSource_ source,ClientType_ type){//find F
     LinkSource_ tmp = Monitor_UI_Link;
     if(source == PC_Simulator_Link){//come from pc simulator,so should find a fd from monitor moudle
         tmp = Monitor_UI_Link;
-
+        
     }else if(source == Monitor_UI_Link){
         tmp = PC_Simulator_Link;
     }

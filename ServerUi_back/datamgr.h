@@ -26,7 +26,6 @@ protected:
 
 private:
     LinkMgr* m_pLinkMgr;
-    static DataMgr* pThis;
 
     BYTE m_recvBuf[MAX_DATA_BUF];
 

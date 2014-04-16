@@ -16,8 +16,8 @@ SOURCES += main.cpp \
     nibpwindow.cpp \
     nibpmgr.cpp \
     ecgwindow.cpp \
-    datadev.cpp \
-    datamgr.cpp
+    datamgr.cpp \
+    ../common/datadev.cpp
 HEADERS += mainwindow.h \
     mgrdev.h \
     basicmgr.h \
@@ -27,13 +27,12 @@ HEADERS += mainwindow.h \
     queue.h \
     netdev.h \
     network.h \
-    ../include/link.h \
     ../include/define.h \
     nibpwindow.h \
     nibpmgr.h \
     ecgwindow.h \
-    datadev.h \
-    datamgr.h
+    datamgr.h \
+    ../common/datadev.h
 FORMS += mainwindow.ui \
     spo2window.ui \
     nibpwindow.ui \

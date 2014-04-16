@@ -45,7 +45,7 @@ static BYTE twoBYTEConverToHex(BYTE hight,BYTE low){
 
 
 enum LinkSource_{
-    PC_Simulator_Link,//pc 模拟器 连接
+    PC_Simulator_Link=0x80,//pc 模拟器 连接
     Monitor_UI_Link,//监护仪或UI 连接
     Server_Link
 };

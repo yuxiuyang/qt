@@ -3,7 +3,6 @@
 #include "mainwindow.h"
 #include <string>
 using namespace std;
-DataMgr* DataMgr::pThis = NULL;
 DataMgr::DataMgr()
 {
     DataDev::getInstance()->setCallback(recvData);
@@ -12,8 +11,6 @@ DataMgr::DataMgr()
     assert(m_pLinkMgr);
 
     memset(&m_recvBuf,0,sizeof(m_recvBuf));
-
-    pThis = this;
 }
 DataMgr::~DataMgr()
 {
@@ -23,40 +20,38 @@ DataMgr::~DataMgr()
 
 
 void DataMgr::recvData(int socket){
-    if(socket == pThis->m_pLinkMgr->getServerFd()){//client try to connect server
-        pThis->m_pLinkMgr->waitAcceptConnect();
-        return;
-    }
-
-    char tmpbuf[100]={0};
-    int len = recv(socket,&pThis->m_recvBuf,sizeof(pThis->m_recvBuf),0);
-    if (len <= 0) {        // client close
-          pThis->m_pLinkMgr->recvLinkMsg(Connect_Close,socket);
-          DataDev::getInstance()->removeFd(socket);
-          //cout<<""
-          //FD_CLR(m_tmpVec[i], &fdSet);
-     } else {        // receive data
-           cout<<"server   success rec data from client     fd="<<socket<<endl;
-           sprintf(tmpbuf,"server success recv data fd=%d",socket);
-           ((MainWindow*)pThis->m_pLinkMgr->m_window)->appendMsg(tmpbuf);
+//    if(socket == m_pLinkMgr->getServerFd()){//client try to connect server
+//        m_pLinkMgr->waitAcceptConnect();
+//        return;
+//    }
 //
-//                        BYTE buf[4];
-//                        for(int i=0;i<4;i++){
-//                            buf[i]=i+10;
-//                        }
-//                        Msg_ msg;
-//                        msg.type = Data_Msg;
-//                        msg.dataMsg.type = NIBP_CLIENT;
-//                        memcpy(msg.dataMsg.buf,buf,4);
-//                        msg.dataMsg.buf_len = 4;
-//                        msg.dataMsg.comeForm = PC_Simulator_Link;
+//    int len = recv(socket,&m_recvBuf,sizeof(m_recvBuf),0);
+//    if (len <= 0) {        // client close
+//          m_pLinkMgr->recvLinkMsg(Connect_Close,socket);
+//          DataDev::getInstance()->removeFd(socket);
+//          //FD_CLR(m_tmpVec[i], &fdSet);
+//     } else {        // receive data
+//           cout<<"server   success rec data from client     fd="<<socket<<endl;
+////           sprintf(tmpbuf,"server success recv data fd=%d",m_tmpVec[i]);
+////           ((MainWindow*)m_pLinkMgr->m_window)->appendMsg(tmpbuf);
+////
+////                        BYTE buf[4];
+////                        for(int i=0;i<4;i++){
+////                            buf[i]=i+10;
+////                        }
+////                        Msg_ msg;
+////                        msg.type = Data_Msg;
+////                        msg.dataMsg.type = NIBP_CLIENT;
+////                        memcpy(msg.dataMsg.buf,buf,4);
+////                        msg.dataMsg.buf_len = 4;
+////                        msg.dataMsg.comeForm = PC_Simulator_Link;
+////
+////                        cout<<"nibpmgr  senddata"<<endl;
+//                        //DataDev::getInstance()->sendData(m_tmpVec[i],&msg);
+//                       // m_pDataMgr->recvData(&recvMsg);
 //
-//                        cout<<"nibpmgr  senddata"<<endl;
-                        //DataDev::getInstance()->sendData(m_tmpVec[i],&msg);
-                       // m_pDataMgr->recvData(&recvMsg);
-
-           pThis->handle();
-    }
+//           handle();
+//    }
 
     return;
 }
