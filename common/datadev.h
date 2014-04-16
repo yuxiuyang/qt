@@ -44,7 +44,8 @@ class DataDev : public QThread
         static DataDev* getInstance();
 
         void sendData(int fd,const BYTE* buf,int len);
-
+        void sendData(int socketFd,MsgType_ msgType,ClientType_ clientType,DataSource_ dataSource,const BYTE* buf,const int len);
+        bool checkData(BYTE* buf,int len,BYTE value);
         void setCallback(void(*callback)(int)){
             CallBack_ = callback;
         }

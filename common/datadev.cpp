@@ -80,6 +80,8 @@ void DataDev::recvData(){
 }
 
 void DataDev::sendData(int fd,const BYTE* buf,int len){
+    m_sendMutex.lock();
+
     //驱动任务巢
     CJobPkg* pkg=m_pDataJob->GetJobPkg(0);
     assert(pkg);
@@ -92,13 +94,6 @@ void DataDev::sendData(int fd,const BYTE* buf,int len){
     pci->len = len;
     pci->pThis = this;
     memcpy(pci->buf,buf,sizeof(BYTE)*len);
-    cout<<"dfsdfddfsdf"<<endl;
-    printf("DataDev  senddata   len=%d  this=%lu\n",len,this);
-    for(int i=0;i<len;i++){
-        printf("%02x ",pci->buf[i]);
-    }
-    printf("\n");
-
 
 
     pkg->SetExecFunction(sendData_);
@@ -106,25 +101,49 @@ void DataDev::sendData(int fd,const BYTE* buf,int len){
     pkg->SetID(1);//different thread have different source. as to this ID ,can delete the soucre.
 
     m_pDataJob->SubmitJobPkg(pkg);
+
+    m_sendMutex.unlock();
+}
+
+BYTE tmpBuf[100];
+void DataDev::sendData(int socketFd,MsgType_ msgType,ClientType_ clientType,DataSource_ dataSource,const BYTE* buf,const int len){
+    m_sendMutex.lock();
+    tmpBuf[0] = 0x99;//start
+    tmpBuf[1] = msgType;
+    tmpBuf[2] = clientType;
+    tmpBuf[3] = dataSource;
+    tmpBuf[4] = len+7;//
+
+    BYTE calSum = 0x00;
+    for(int i=0;i<len;i++){
+        tmpBuf[5+i] = buf[i];
+        calSum += buf[i];
+    }
+    tmpBuf[5+len] = tmpBuf[1] + tmpBuf[2] + tmpBuf[3] +tmpBuf[4] + calSum;
+
+    tmpBuf[5+len+1] = 0xdd;//end
+
+     m_sendMutex.unlock();
+
+     sendData(socketFd,tmpBuf,7+len);
+}
+bool DataDev::checkData(const BYTE* buf,const int len,const BYTE value){
+    BYTE sum=0x00;
+    for(int i=0;i<len;i++){
+        sum += buf[i];
+    }
+
+    return sum==value?true:false;
 }
 
 void DataDev::sendData_(void* pv){
     INFO_DATA* dataMsg = (INFO_DATA*)pv;
     assert(dataMsg);
 
-    dataMsg->pThis->m_sendMutex.lock();
-
-        printf("DataDev  sendData_   len=%d\n",dataMsg->len);
-        for(int i=0;i<dataMsg->len;i++){
-            printf("%02x ",dataMsg->buf[i]);
-        }
-        printf("\n");
     int size = send(dataMsg->fd,dataMsg->buf,dataMsg->len,0);
     if(size != dataMsg->len){
          printf("send error errno=%d,size=%d\n",errno,size);
     }
-
-    dataMsg->pThis->m_sendMutex.unlock();
 }
 
 

@@ -3,7 +3,6 @@
 #include "../include/define.h"
 #include "linkmgr.h"
 
-#define MAX_RECIEVE_BUF 1024
 class DataMgr
 {
 public:
@@ -15,20 +14,16 @@ public:
     void setWindow(void*);
 protected:
 
-    void handDataMsg(const DataMsg_* dataMsg);
-    void handleCmdMsg(const CmdMsg_* cmdMsg);
-    void handleNotifyMsg(const NotifyMsg_* notifyMsg);
+    void setBuf(const BYTE* buf,int len);
     void handle();
-
-    void convertDatas(int fd,const Msg_* msg);
-
-
 
 private:
     LinkMgr* m_pLinkMgr;
     static DataMgr* pThis;
 
-    BYTE m_recvBuf[MAX_DATA_BUF];
+    BYTE m_dataBuf[MAX_DATA_BUF];
+    int m_pWirte;
+    int m_pRead;
 
     void* m_pWindow;
 };

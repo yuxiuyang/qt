@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
-#define MAX_DATA_BUF 120
+#define MAX_DATA_BUF 4096
 #define ERROR_MSG_BUF 150
 
 typedef unsigned char BYTE;
@@ -43,14 +43,13 @@ static BYTE twoBYTEConverToHex(BYTE hight,BYTE low){
         return (hight<<4)|low;
 }
 
-
-enum LinkSource_{
-    PC_Simulator_Link=0x80,//pc 模拟器 连接
+enum DataSource_{
+    PC_Simulator_Link=0x10,//pc 模拟器 连接
     Monitor_UI_Link,//监护仪或UI 连接
     Server_Link
 };
 enum ClientType_{
-    ECG_CLIENT,
+    ECG_CLIENT=0x20,
     SPO2_CLIENT,
     CO2_CLIENT,
     NIBP_CLIENT,
@@ -60,25 +59,25 @@ enum ClientType_{
 };
 
 struct NotifyMsg_{
-    LinkSource_ comeForm;
+    DataSource_ comeForm;
     ClientType_ type;
     bool connectState;
 };
 struct CmdMsg_{
-    LinkSource_ comeForm;
+    DataSource_ comeForm;
     ClientType_ moduleType;
     int         cmd;
     void*      wparam;
     void*      lparam;
 };
 struct DataMsg_{
-    LinkSource_ comeForm;
+    DataSource_ comeForm;
     ClientType_ type;
     BYTE buf[MAX_DATA_BUF];
     int buf_len;
 };
-enum MsgType{
-    Notify_Msg,
+enum MsgType_{
+    Notify_Msg=0x30,
     Cmd_Msg,
     Data_Msg,
     Client_Error_Msg,
@@ -89,11 +88,11 @@ enum MsgType{
 };
 struct Link{
     int fd;
-    LinkSource_ comeForm;
+    DataSource_ comeForm;
     ClientType_ type;
 };
 struct Msg_{
-    MsgType type;
+    MsgType_ type;
     union{
         NotifyMsg_ notifyMsg;
         CmdMsg_    cmdMsg;
@@ -104,7 +103,7 @@ struct Msg_{
 };
 
 enum CONNECT_MSG_TYPE{
-    Connect_Error,
+    Connect_Error=0x41,
     Connect_Timeout,
     Connect_Success,
     Connect_Failure,
