@@ -4,6 +4,8 @@
 //#include <QWidget>
 #include <QDialog>
 #include "spo2mgr.h"
+#include <QTimer>
+#include <QMutex>
 namespace Ui {
     class Spo2Window;
 }
@@ -30,6 +32,7 @@ public Q_SLOTS:
     void genarateNewDataCheckStateChanged(int state);
     void showReadDataCheckStateChanged(int state);
     void showData(char* buf);
+    void appendStatisticsMsg(char* buf);
     void connectNetwork();
     void disConnectNetwork();
     void sendTestData();

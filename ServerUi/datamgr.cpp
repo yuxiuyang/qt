@@ -40,10 +40,11 @@ void DataMgr::recvData(int socket){
            cout<<"server   success rec data from client     fd="<<socket<<endl;
            //sprintf(tmpbuf,"server success recv data fd=%d",socket);
          for(int i=0;i<len;i++){
-             sprintf(tmpbuf,"%02x ",tmpbuf[i]);
+             sprintf(tmpbuf,"%02x ",pThis->m_recvBuf[i]);
              strBuf += tmpbuf;
+             printf("%02x ",pThis->m_recvBuf[i]);
          }
-           ((MainWindow*)pThis->m_pLinkMgr->m_window)->appendMsg(strBuf.c_str());
+           ((MainWindow*)pThis->m_pLinkMgr->m_window)->appendData(strBuf.c_str());
 //
 //                        BYTE buf[4];
 //                        for(int i=0;i<4;i++){
@@ -103,7 +104,7 @@ void DataMgr::convertDatas(int fd,const Msg_* msg){
             sprintf(buf+i,"%02x ",msg->dataMsg.buf[i]);
         }
         buf[i] = '\0';
-        ((MainWindow*)(m_pLinkMgr->m_window))->appendMsg(SPO2_CLIENT,buf);
+        ((MainWindow*)(m_pLinkMgr->m_window))->appendData(buf);
     }
 }
 

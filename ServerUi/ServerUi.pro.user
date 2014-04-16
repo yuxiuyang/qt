@@ -56,19 +56,10 @@
   <variable>buildConfiguration-Debug</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
-   <value key="QtVersionId" type="int">0</value>
+   <value key="QtVersionId" type="int">3</value>
    <value key="ToolChain" type="int">0</value>
    <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">2</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildConfiguration-Release</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-   <value key="QtVersionId" type="int">0</value>
-   <value key="addQDumper" type=""></value>
-   <value key="buildConfiguration" type="int">0</value>
   </valuemap>
  </data>
  <data>
@@ -76,7 +67,7 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gEG0TUkDlk,guid=fbea8eb979626581c78362f153438930</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-i8KyCODLfA,guid=03e638683a51a8ebe813e99f534d222f</value>
     <value type="QString">DEFAULTS_PATH=/usr/share/gconf/gnome.default.path</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
     <value type="QString">DISPLAY=:0.0</value>
@@ -84,29 +75,30 @@
     <value type="QString">GDM_KEYBOARD_LAYOUT=us</value>
     <value type="QString">GDM_LANG=en_HK.UTF-8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-np4eZK</value>
-    <value type="QString">GNOME_KEYRING_PID=1585</value>
+    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-PQoeTI</value>
+    <value type="QString">GNOME_KEYRING_PID=1236</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
     <value type="QString">HOME=/root</value>
     <value type="QString">LANG=en_HK.UTF-8</value>
-    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
+    <value type="QString">LD_LIBRARY_PATH=/opt/qtcreator-1.3.0/lib/qtcreator:</value>
     <value type="QString">LOGNAME=root</value>
     <value type="QString">MANDATORY_PATH=/usr/share/gconf/gnome.mandatory.path</value>
+    <value type="QString">MANPATH=/usr/local/Trolltech/Qt-4.3.2/man:</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-root</value>
-    <value type="QString">PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
+    <value type="QString">PATH=/usr/bin:/usr/local/Trolltech/Qt-4.3.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
     <value type="QString">PWD=/root</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
-    <value type="QString">SESSION_MANAGER=local/yuxiuyang-desktop:@/tmp/.ICE-unix/1603,unix/yuxiuyang-desktop:/tmp/.ICE-unix/1603</value>
+    <value type="QString">SESSION_MANAGER=local/yxy-laptop:@/tmp/.ICE-unix/1254,unix/yxy-laptop:/tmp/.ICE-unix/1254</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SPEECHD_PORT=6560</value>
-    <value type="QString">SSH_AGENT_PID=1638</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-np4eZK/ssh</value>
+    <value type="QString">SSH_AGENT_PID=1289</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-PQoeTI/ssh</value>
     <value type="QString">USER=root</value>
     <value type="QString">USERNAME=root</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-root-V2cInU/database</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-root-aGyYGe/database</value>
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome:/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString">XDG_SESSION_COOKIE=02a84948043a9d01d5bafcd4516bcad0-1396934960.525603-1234554379</value>
+    <value type="QString">XDG_SESSION_COOKIE=31d3befcddfa29781fce08a451dc123a-1397563951.562168-1698699489</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
     <value type="QString">/root/workspace/code/qt/ServerUi/ServerUi.pro</value>
@@ -125,7 +117,7 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gEG0TUkDlk,guid=fbea8eb979626581c78362f153438930</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-i8KyCODLfA,guid=03e638683a51a8ebe813e99f534d222f</value>
     <value type="QString">DEFAULTS_PATH=/usr/share/gconf/gnome.default.path</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
     <value type="QString">DISPLAY=:0.0</value>
@@ -133,29 +125,30 @@
     <value type="QString">GDM_KEYBOARD_LAYOUT=us</value>
     <value type="QString">GDM_LANG=en_HK.UTF-8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-np4eZK</value>
-    <value type="QString">GNOME_KEYRING_PID=1585</value>
+    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-PQoeTI</value>
+    <value type="QString">GNOME_KEYRING_PID=1236</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
     <value type="QString">HOME=/root</value>
     <value type="QString">LANG=en_HK.UTF-8</value>
-    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
+    <value type="QString">LD_LIBRARY_PATH=/opt/qtcreator-1.3.0/lib/qtcreator:</value>
     <value type="QString">LOGNAME=root</value>
     <value type="QString">MANDATORY_PATH=/usr/share/gconf/gnome.mandatory.path</value>
+    <value type="QString">MANPATH=/usr/local/Trolltech/Qt-4.3.2/man:</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-root</value>
-    <value type="QString">PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
+    <value type="QString">PATH=/usr/bin:/usr/local/Trolltech/Qt-4.3.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
     <value type="QString">PWD=/root</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
-    <value type="QString">SESSION_MANAGER=local/yuxiuyang-desktop:@/tmp/.ICE-unix/1603,unix/yuxiuyang-desktop:/tmp/.ICE-unix/1603</value>
+    <value type="QString">SESSION_MANAGER=local/yxy-laptop:@/tmp/.ICE-unix/1254,unix/yxy-laptop:/tmp/.ICE-unix/1254</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SPEECHD_PORT=6560</value>
-    <value type="QString">SSH_AGENT_PID=1638</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-np4eZK/ssh</value>
+    <value type="QString">SSH_AGENT_PID=1289</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-PQoeTI/ssh</value>
     <value type="QString">USER=root</value>
     <value type="QString">USERNAME=root</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-root-V2cInU/database</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-root-aGyYGe/database</value>
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome:/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString">XDG_SESSION_COOKIE=02a84948043a9d01d5bafcd4516bcad0-1396934960.525603-1234554379</value>
+    <value type="QString">XDG_SESSION_COOKIE=31d3befcddfa29781fce08a451dc123a-1397563951.562168-1698699489</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
@@ -171,7 +164,7 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-D3olC9akxW,guid=b87c40f583cd7ca358b5bc3e52ddc19a</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-i8KyCODLfA,guid=03e638683a51a8ebe813e99f534d222f</value>
     <value type="QString">DEFAULTS_PATH=/usr/share/gconf/gnome.default.path</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
     <value type="QString">DISPLAY=:0.0</value>
@@ -179,29 +172,30 @@
     <value type="QString">GDM_KEYBOARD_LAYOUT=us</value>
     <value type="QString">GDM_LANG=en_HK.UTF-8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-GRm07Q</value>
-    <value type="QString">GNOME_KEYRING_PID=1554</value>
+    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-PQoeTI</value>
+    <value type="QString">GNOME_KEYRING_PID=1236</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module</value>
     <value type="QString">HOME=/root</value>
     <value type="QString">LANG=en_HK.UTF-8</value>
-    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
+    <value type="QString">LD_LIBRARY_PATH=/opt/qtcreator-1.3.0/lib/qtcreator:</value>
     <value type="QString">LOGNAME=root</value>
     <value type="QString">MANDATORY_PATH=/usr/share/gconf/gnome.mandatory.path</value>
+    <value type="QString">MANPATH=/usr/local/Trolltech/Qt-4.3.2/man:</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-root</value>
-    <value type="QString">PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
+    <value type="QString">PATH=/usr/bin:/usr/local/Trolltech/Qt-4.3.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
     <value type="QString">PWD=/root</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
-    <value type="QString">SESSION_MANAGER=local/yuxiuyang-desktop:@/tmp/.ICE-unix/1572,unix/yuxiuyang-desktop:/tmp/.ICE-unix/1572</value>
+    <value type="QString">SESSION_MANAGER=local/yxy-laptop:@/tmp/.ICE-unix/1254,unix/yxy-laptop:/tmp/.ICE-unix/1254</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SPEECHD_PORT=6560</value>
-    <value type="QString">SSH_AGENT_PID=1607</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-GRm07Q/ssh</value>
+    <value type="QString">SSH_AGENT_PID=1289</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-PQoeTI/ssh</value>
     <value type="QString">USER=root</value>
     <value type="QString">USERNAME=root</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-root-TPtE4m/database</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-root-aGyYGe/database</value>
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome:/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString">XDG_SESSION_COOKIE=02a84948043a9d01d5bafcd4516bcad0-1390264730.652225-1861314740</value>
+    <value type="QString">XDG_SESSION_COOKIE=31d3befcddfa29781fce08a451dc123a-1397563951.562168-1698699489</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">true</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
@@ -218,28 +212,9 @@
   </valuemap>
  </data>
  <data>
-  <variable>buildconfiguration-Release-buildstep0</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Release-buildstep1</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Release-cleanstep0</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-  </valuemap>
- </data>
- <data>
   <variable>buildconfigurations</variable>
   <valuelist type="QVariantList">
    <value type="QString">Debug</value>
-   <value type="QString">Release</value>
   </valuelist>
  </data>
  <data>

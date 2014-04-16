@@ -19,6 +19,7 @@ DataDev::DataDev(QObject *parent) :
     m_pthreadState = THREAD_STOP;
 
     CallBack_ = NULL;
+    printf("this = %lu\n",this);
 }
 DataDev::~DataDev(){
     m_fdVec.clear();
@@ -86,12 +87,17 @@ void DataDev::sendData(int fd,const BYTE* buf,int len){
 
     INFO_DATA* pci=(INFO_DATA*)pkg->Alloc(sizeof(INFO_DATA));
     assert(pci);
-    pci->buf = new char[len+1];
+    pci->buf = new BYTE[len];
     pci->fd = fd;
     pci->len = len;
     pci->pThis = this;
     memcpy(pci->buf,buf,sizeof(BYTE)*len);
-    //strcpy(pci->buf,buf);
+    cout<<"dfsdfddfsdf"<<endl;
+    printf("DataDev  senddata   len=%d  this=%lu\n",len,this);
+    for(int i=0;i<len;i++){
+        printf("%02x ",pci->buf[i]);
+    }
+    printf("\n");
 
 
 
@@ -108,10 +114,14 @@ void DataDev::sendData_(void* pv){
 
     dataMsg->pThis->m_sendMutex.lock();
 
-
+        printf("DataDev  sendData_   len=%d\n",dataMsg->len);
+        for(int i=0;i<dataMsg->len;i++){
+            printf("%02x ",dataMsg->buf[i]);
+        }
+        printf("\n");
     int size = send(dataMsg->fd,dataMsg->buf,dataMsg->len,0);
     if(size != dataMsg->len){
-         printf("send error errno=%d\n",errno);
+         printf("send error errno=%d,size=%d\n",errno,size);
     }
 
     dataMsg->pThis->m_sendMutex.unlock();

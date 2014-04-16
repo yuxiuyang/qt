@@ -182,9 +182,9 @@ void NibpWindow::genarateNewDataCheckStateChanged(int state){
     BYTE test[4];
     for(int i=0;i<4;i++){
         test[i] = i;
-        printf("%02x ",test[i]);
+        //printf("%02x ",test[i]);
     }
-    printf("\n");
+   // printf("\n");
     m_nibpMgr->sendData(test,4);
 }
 
@@ -197,23 +197,23 @@ void NibpWindow::displayStatisicsResult(){
     TESTMSG* msg = m_nibpMgr->getTestMsg();
     static char buf[100]={0};
     sprintf(buf,"timeSum=%ld",msg->timeSum);
-    ui->pStatistics_txt->append(buf);
+    appendStatisticsMsg(buf);
     sprintf(buf,"readSum=%ld",msg->readSum);
-    ui->pStatistics_txt->append(buf);
+    appendStatisticsMsg(buf);
     sprintf(buf,"times=%ld",msg->times);
-    ui->pStatistics_txt->append(buf);
-    ui->pStatistics_txt->append("------------caculator------------");
+    appendStatisticsMsg(buf);
+    appendStatisticsMsg("------------caculator------------");
 
     sprintf(buf,"arg_time1=%4.1f (ms each)",(float)msg->timeSum/(float)msg->times);
-    ui->pStatistics_txt->append(buf);
+    appendStatisticsMsg(buf);
 
     sprintf(buf,"arg_time2=%4.1f (ts/s)",((float)msg->times/(float)msg->timeSum)*1000.);
-    ui->pStatistics_txt->append(buf);
+    appendStatisticsMsg(buf);
 
     sprintf(buf,"arg_read1=%4.1f (one each)",(float)msg->readSum/(float)msg->times);
-    ui->pStatistics_txt->append(buf);
+    appendStatisticsMsg(buf);
     sprintf(buf,"arg_read2=%4.1f (n/s)",(float)msg->readSum/(float)msg->times*1000);
-    ui->pStatistics_txt->append(buf);
+    appendStatisticsMsg(buf);
 
     /*QTextCursor cs=ui.chat_edit->textCursor();
                 cs.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
@@ -223,5 +223,14 @@ void NibpWindow::displayStatisicsResult(){
 */
 }
 void NibpWindow::showData(char* buf){
+    QTextCursor cursor =  ui->pMsg_Txt->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->pMsg_Txt->setTextCursor(cursor);
     ui->pMsg_Txt->insertPlainText(buf);
+}
+void NibpWindow::appendStatisticsMsg(char* buf){
+    QTextCursor cursor =  ui->pStatistics_txt->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->pStatistics_txt->setTextCursor(cursor);
+    ui->pStatistics_txt->append(buf);
 }

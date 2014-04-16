@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Tue Apr 15 22:13:17 2014
+** Created: Wed Apr 16 20:48:13 2014
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -55,6 +55,7 @@ public:
         pConnectMsg_txt = new QTextBrowser(centralWidget);
         pConnectMsg_txt->setObjectName(QString::fromUtf8("pConnectMsg_txt"));
         pConnectMsg_txt->setGeometry(QRect(20, 60, 171, 201));
+        pConnectMsg_txt->viewport()->setProperty("cursor", QVariant(QCursor(Qt::CrossCursor)));
         pDisplay_txt = new QTextBrowser(centralWidget);
         pDisplay_txt->setObjectName(QString::fromUtf8("pDisplay_txt"));
         pDisplay_txt->setGeometry(QRect(200, 60, 256, 201));
@@ -76,7 +77,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 23));
+        menuBar->setGeometry(QRect(0, 0, 600, 32));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));

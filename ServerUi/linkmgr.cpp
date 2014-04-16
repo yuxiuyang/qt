@@ -6,17 +6,11 @@ LinkMgr::LinkMgr(){
     m_initServerOk = m_serverNetwork.init();
 
     //start listen server
+    assert(m_initServerOk);
     DataDev::getInstance()->addFd(getServerFd());
 }
 LinkMgr::~LinkMgr(){
-    std::map <int, Link*>::iterator iter;
-    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
-        if(iter->second){
-            delete iter->second;
-            iter->second = NULL;
-        }
-    }
-    m_clientConnectMsgMap.clear();
+    m_clientConnectMsgVec.clear();
     m_registerClientSocketFdVec.clear();
 
 }
@@ -27,13 +21,14 @@ void LinkMgr::waitAcceptConnect(){
     int clientFd = m_serverNetwork.waitAccept();
     if(-1 == clientFd){
         cout<<"clientFd=-1 accept failure errno="<<errno<<endl;
+        recvLinkMsg(Connect_Failure,-1,errno);
         if(EAGAIN == errno){
 
         }
         return;
     }
+    recvLinkMsg(Connect_Success,clientFd);
 
-    assert(addClientSocketFd(clientFd));
 }
 
 bool LinkMgr::registerSocketFd(int socketFd){
@@ -65,24 +60,20 @@ bool LinkMgr::sendToClient(int clientSocket){//send connect or disconnect to cli
     return true;
 }
 
-Link* LinkMgr::findClient(int clientSocket){
-    std::map <int, Link*>::iterator iter;
-    iter = m_clientConnectMsgMap.find(clientSocket);//search clientFd
+bool LinkMgr::findClient(int clientSocket){
+    std::vector <int>::iterator iter;
+    iter = find(m_clientConnectMsgVec.begin(),m_clientConnectMsgVec.end(),clientSocket);//search clientFd
 
-    return iter==m_clientConnectMsgMap.end()?NULL:iter->second;
+    return iter==m_clientConnectMsgVec.end()?false:true;
 }
 
 bool LinkMgr::removeClientSocket(int clientSocket){
-    std::map <int, Link*>::iterator iter;
-    iter = m_clientConnectMsgMap.find(clientSocket);//search clientFd
+    std::vector <int>::iterator iter;
+    iter = find(m_clientConnectMsgVec.begin(),m_clientConnectMsgVec.end(),clientSocket);//search clientFd
 
-    if(iter != m_clientConnectMsgMap.end()){
-        if(iter->second){
-            delete iter->second;
-            iter->second = NULL;
-        }
+    if(iter != m_clientConnectMsgVec.end()){
         DataDev::getInstance()->removeFd(clientSocket);
-        m_clientConnectMsgMap.erase(iter);
+        m_clientConnectMsgVec.erase(iter);
 
         unregisterSocketFd(clientSocket);
         return true;
@@ -98,21 +89,21 @@ void LinkMgr::setWindow(void* win){
 void LinkMgr::getClientSocketFd(int clientFd[],int& len){
     // add active connection to fd set
     len = 0;
-    std::map <int, Link*>::iterator iter;
-    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
-        cout<<"add fd ="<<iter->first<<endl;
+    std::vector<int>::iterator iter;
+    for(iter=m_clientConnectMsgVec.begin();iter!=m_clientConnectMsgVec.end();iter++){
+        cout<<"add fd ="<<*iter<<endl;
         //FD_SET(iter->first, &fdSet);
-        clientFd[len++] = iter->first;
+        clientFd[len++] = *iter;
     }
 }
 void LinkMgr::getClientSocketFd(vector<int>* vec){
     assert(vec);
-    std::map <int, Link*>::iterator iter;
-    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
-        cout<<"add fd ="<<iter->first<<endl;
+    std::vector<int>::iterator iter;
+    for(iter=m_clientConnectMsgVec.begin();iter!=m_clientConnectMsgVec.end();iter++){
+        cout<<"add fd ="<<*iter<<endl;
         //FD_SET(iter->first, &fdSet);
         //clientFd[len++] = iter->first;
-        vec->push_back(iter->first);
+        vec->push_back(*iter);
     }
 }
 
@@ -121,18 +112,10 @@ bool LinkMgr::addClientSocketFd(int clientFd){
     char msgBuf[100]={0};
     //manage client FD
     if(!findClient(clientFd)){// not exsit
-        std::pair< std::map< int, Link* >::iterator, bool> ct;
-        ct = m_clientConnectMsgMap.insert( std::pair <int, Link*> ( clientFd,  NULL) );
-        if( ct.second ){
-            //printf("\n m_Event_Name_Map insert Data Success....m,size=%d,this=%lu\n",m_clientConnectMsgMap.size(),this);
-            sprintf(msgBuf,"accept client =%d success",clientFd);
-            ((MainWindow*)m_window)->appendMsg(msgBuf);
-            DataDev::getInstance()->addFd(clientFd);
-            return true;
-        }else{
-             printf("\n m_Event_Name_Map insert Data fail....\n");
-             return false;
-        }
+       m_clientConnectMsgVec.push_back(clientFd);
+       sprintf(msgBuf,"accept client =%d success",clientFd);
+       ((MainWindow*)m_window)->appendMsg(msgBuf);
+       DataDev::getInstance()->addFd(clientFd);
     }else{
         cout<<"this client="<<clientFd<<"has exist"<<endl;
         return true;
@@ -154,9 +137,7 @@ void LinkMgr::recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error){
             break;
         case Connect_Success:
             assert(clientFd>0);
-            if(addClientSocketFd(clientFd)){
-
-            }
+            assert(addClientSocketFd(clientFd));
             sprintf(msgBuf,"connect success,clientfd=%d",clientFd);
             break;
         case Connect_Error:
@@ -171,49 +152,8 @@ void LinkMgr::recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error){
     }
     ((MainWindow*)m_window)->appendMsg(msgBuf);
 }
-int LinkMgr::findIdentifyForwardFd(LinkSource_ source,ClientType_ type){//find Forwarded object
-    LinkSource_ tmp = Monitor_UI_Link;
-    if(source == PC_Simulator_Link){//come from pc simulator,so should find a fd from monitor moudle
-        tmp = Monitor_UI_Link;
 
-    }else if(source == Monitor_UI_Link){
-        tmp = PC_Simulator_Link;
-    }
-    std::map <int, Link*>::iterator iter;
-    for(iter=m_clientConnectMsgMap.begin();iter!=m_clientConnectMsgMap.end();iter++){
-        if(iter->second->comeForm == tmp && iter->second->type == type){
-            if(iter->first != iter->second->fd){
-                cout<<"may be error happend,,,,,iter->first="<<iter->first<<"iter->second->fd="<<iter->second->fd<<endl;
-                return -1;
-            }
-            return iter->first;
-        }
-    }
-    return -1;
-}
 
-void LinkMgr::recvLinkMsg(const Link* linkMsg){
-    std::map <int, Link*>::iterator iter;
-    iter = m_clientConnectMsgMap.find(linkMsg->fd);//search clientFd
-
-    if(iter == m_clientConnectMsgMap.end()){
-        cout<<"not possible,may a error"<<endl;
-        return;
-    }
-
-    if(m_clientConnectMsgMap[linkMsg->fd]){//delete old link msg
-        delete m_clientConnectMsgMap[linkMsg->fd];
-        m_clientConnectMsgMap[linkMsg->fd] = NULL;
-    }
-
-    //add new link msg
-    Link* ln = new Link();
-    ln->fd = linkMsg->fd;
-    ln->comeForm = linkMsg->comeForm;
-    ln->type = linkMsg->type;
-
-    m_clientConnectMsgMap[linkMsg->fd] = ln;
-}
 
 
 

@@ -33,7 +33,7 @@ void NibpMgr::sendData(BYTE* buf,int len){
     msg.dataMsg.buf_len = len;
     msg.dataMsg.comeForm = PC_Simulator_Link;
 
-    cout<<"nibpmgr  senddata"<<endl;
+    //cout<<"nibpmgr  senddata"<<endl;
     DataDev::getInstance()->sendData(m_network->getSockFd(),buf,len);
 }
 

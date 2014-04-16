@@ -28,6 +28,7 @@ public Q_SLOTS:
     void startTestCheckStateChanged (int state);
     void genarateNewDataCheckStateChanged(int state);
     void showReadDataCheckStateChanged(int state);
+    void appendStatisticsMsg(char* buf);
     void showData(char* buf);
     void connectNetwork();
     void disConnectNetwork();

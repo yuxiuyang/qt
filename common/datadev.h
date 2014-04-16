@@ -16,7 +16,7 @@ using namespace std;
 class DataDev;
 struct INFO_DATA{
     int fd;
-    char* buf;
+    BYTE* buf;
     int len;
     DataDev* pThis;
 };

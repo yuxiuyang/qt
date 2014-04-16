@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'spo2window.h'
 **
-** Created: Wed Apr 16 10:06:48 2014
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
+** Created: Wed Apr 16 22:12:39 2014
+**      by: The Qt Meta Object Compiler version 59 (Qt 4.3.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,25 +10,21 @@
 #include "spo2window.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'spo2window.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.6.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 59
+#error "This file was generated using the moc from 4.3.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_Spo2Window[] = {
 
  // content:
-       4,       // revision
+       1,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   10, // methods
        0,    0, // properties
        0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x0a,
@@ -41,9 +37,10 @@ static const uint qt_meta_data_Spo2Window[] = {
      139,  101,   11,   11, 0x0a,
      177,  101,   11,   11, 0x0a,
      216,  212,   11,   11, 0x0a,
-     232,   11,   11,   11, 0x0a,
-     249,   11,   11,   11, 0x0a,
-     269,   11,   11,   11, 0x0a,
+     232,  212,   11,   11, 0x0a,
+     259,   11,   11,   11, 0x0a,
+     276,   11,   11,   11, 0x0a,
+     296,   11,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -55,8 +52,9 @@ static const char qt_meta_stringdata_Spo2Window[] = {
     "startTestCheckStateChanged(int)\0"
     "genarateNewDataCheckStateChanged(int)\0"
     "showReadDataCheckStateChanged(int)\0"
-    "buf\0showData(char*)\0connectNetwork()\0"
-    "disConnectNetwork()\0sendTestData()\0"
+    "buf\0showData(char*)\0appendStatisticsMsg(char*)\0"
+    "connectNetwork()\0disConnectNetwork()\0"
+    "sendTestData()\0"
 };
 
 const QMetaObject Spo2Window::staticMetaObject = {
@@ -64,20 +62,16 @@ const QMetaObject Spo2Window::staticMetaObject = {
       qt_meta_data_Spo2Window, 0 }
 };
 
-#ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &Spo2Window::getStaticMetaObject() { return staticMetaObject; }
-#endif //Q_NO_DATA_RELOCATION
-
 const QMetaObject *Spo2Window::metaObject() const
 {
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+    return &staticMetaObject;
 }
 
 void *Spo2Window::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_Spo2Window))
-        return static_cast<void*>(const_cast< Spo2Window*>(this));
+	return static_cast<void*>(const_cast< Spo2Window*>(this));
     return QDialog::qt_metacast(_clname);
 }
 
@@ -98,13 +92,12 @@ int Spo2Window::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 7: genarateNewDataCheckStateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 8: showReadDataCheckStateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 9: showData((*reinterpret_cast< char*(*)>(_a[1]))); break;
-        case 10: connectNetwork(); break;
-        case 11: disConnectNetwork(); break;
-        case 12: sendTestData(); break;
-        default: ;
+        case 10: appendStatisticsMsg((*reinterpret_cast< char*(*)>(_a[1]))); break;
+        case 11: connectNetwork(); break;
+        case 12: disConnectNetwork(); break;
+        case 13: sendTestData(); break;
         }
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }
-QT_END_MOC_NAMESPACE

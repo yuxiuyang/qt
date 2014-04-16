@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Wed Apr 16 17:22:21 2014
+** Created: Wed Apr 16 21:38:27 2014
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,7 +37,8 @@ static const uint qt_meta_data_MainWindow[] = {
       52,   11,   11,   11, 0x0a,
       76,   11,   11,   11, 0x0a,
      104,  100,   11,   11, 0x0a,
-     136,  127,   11,   11, 0x0a,
+     127,  100,   11,   11, 0x0a,
+     151,   11,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -46,8 +47,8 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0start_click()\0stop_click()\0"
     "exit_click()\0clearConnectMsg_click()\0"
     "clearDisplayMsg_click()\0msg\0"
-    "appendMsg(const char*)\0type,msg\0"
-    "appendMsg(ClientType_,char*)\0"
+    "appendMsg(const char*)\0appendData(const char*)\0"
+    "sendTimer()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -85,10 +86,11 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: clearConnectMsg_click(); break;
         case 4: clearDisplayMsg_click(); break;
         case 5: appendMsg((*reinterpret_cast< const char*(*)>(_a[1]))); break;
-        case 6: appendMsg((*reinterpret_cast< ClientType_(*)>(_a[1])),(*reinterpret_cast< char*(*)>(_a[2]))); break;
+        case 6: appendData((*reinterpret_cast< const char*(*)>(_a[1]))); break;
+        case 7: sendTimer(); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

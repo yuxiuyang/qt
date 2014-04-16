@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include "network_server.h"
 #include "../common/datadev.h"
+#include <QMutex>
+#include <queue>
+using namespace std;
 namespace Ui {
     class MainWindow;
 }
@@ -22,9 +25,10 @@ public Q_SLOTS:
     void clearDisplayMsg_click();
 
     void appendMsg(const char* msg);
-    void appendMsg(ClientType_ type,char* msg);
+    void appendData(const char* msg);
 
 
+    void sendTimer();
 protected:
     void changeEvent(QEvent *e);
 
@@ -34,10 +38,14 @@ private:
 
     DataMgr* m_pDataMgr;
     DataDev* m_pDataDev;
-    LinkMgr* m_pLinkMgr;
 
 
     ClientType_ m_dataType;
+
+    QTimer *m_pTestTimer;
+    QMutex  m_pMutex;
+    queue<string> m_queDataLine;
+    queue<string> m_queMsgLine;
 };
 
 #endif // MAINWINDOW_H

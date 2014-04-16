@@ -45,7 +45,7 @@
      <x>30</x>
      <y>190</y>
      <width>591</width>
-     <height>171</height>
+     <height>201</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -212,8 +212,11 @@
       <x>330</x>
       <y>20</y>
       <width>251</width>
-      <height>141</height>
+      <height>171</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="pShowReadData_check">
@@ -232,7 +235,7 @@
   </widget>
   <widget class="QTextBrowser" name="pMsg_Txt">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -241,6 +244,9 @@
      <width>361</width>
      <height>161</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
    <property name="openExternalLinks">
     <bool>true</bool>
@@ -290,7 +296,7 @@
     <rect>
      <x>530</x>
      <y>70</y>
-     <width>81</width>
+     <width>91</width>
      <height>32</height>
     </rect>
    </property>
