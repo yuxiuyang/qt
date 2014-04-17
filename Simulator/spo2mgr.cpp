@@ -43,3 +43,6 @@ void Spo2Mgr::display(){
         ((Spo2Window*)m_Ui)->showData(m_readBuf);
 
 }
+void Spo2Mgr::recvData(int fd){
+
+}

@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include "file.h"
 #include "network.h"
+#include "../common/recvobject.h"
 
 #define MAX_READ_TXT 3*300+1
 #define MAX_BUF 1024
@@ -28,7 +29,7 @@ struct TESTMSG{
     }
 };
 
-class BasicMgr
+class BasicMgr:public RecvObject
 {
 public:
     BasicMgr();

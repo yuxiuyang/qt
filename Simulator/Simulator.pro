@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     nibpmgr.cpp \
     ecgwindow.cpp \
     datamgr.cpp \
-    ../common/datadev.cpp
+    ../common/datadev.cpp \
+    ../common/recvobject.cpp
 HEADERS += mainwindow.h \
     mgrdev.h \
     basicmgr.h \
@@ -32,7 +33,8 @@ HEADERS += mainwindow.h \
     nibpmgr.h \
     ecgwindow.h \
     datamgr.h \
-    ../common/datadev.h
+    ../common/datadev.h \
+    ../common/recvobject.h
 FORMS += mainwindow.ui \
     spo2window.ui \
     nibpwindow.ui \

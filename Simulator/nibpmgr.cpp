@@ -46,6 +46,11 @@ void NibpMgr::onTimer(){
 
 
 }
+
+void NibpMgr::recvData(int fd){
+
+}
+
 void NibpMgr::display(){
     if(!BasicMgr::test()) return; // have not start test
 

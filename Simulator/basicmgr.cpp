@@ -155,7 +155,7 @@ bool BasicMgr::connect(){
         cout<<"connect failure"<<endl;
         return false;
     }
-    return DataDev::getInstance()->addFd(fd);
+    return addFd(fd);
 }
 
 bool BasicMgr::disConnect(){

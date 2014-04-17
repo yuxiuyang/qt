@@ -9,6 +9,7 @@ public:
 
 public:
     void onTimer();
+    void recvData(int fd);
 
     void setWindow(void* win){
         assert(win);

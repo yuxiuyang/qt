@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'spo2window.h'
 **
-** Created: Wed Apr 16 22:56:10 2014
-**      by: The Qt Meta Object Compiler version 59 (Qt 4.3.2)
+** Created: Thu Apr 17 14:36:37 2014
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,21 +10,25 @@
 #include "spo2window.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'spo2window.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 59
-#error "This file was generated using the moc from 4.3.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 62
+#error "This file was generated using the moc from 4.6.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
+QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_Spo2Window[] = {
 
  // content:
-       1,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   10, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x0a,
@@ -62,16 +66,20 @@ const QMetaObject Spo2Window::staticMetaObject = {
       qt_meta_data_Spo2Window, 0 }
 };
 
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &Spo2Window::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
 const QMetaObject *Spo2Window::metaObject() const
 {
-    return &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *Spo2Window::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_Spo2Window))
-	return static_cast<void*>(const_cast< Spo2Window*>(this));
+        return static_cast<void*>(const_cast< Spo2Window*>(this));
     return QDialog::qt_metacast(_clname);
 }
 
@@ -96,8 +104,10 @@ int Spo2Window::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 11: connectNetwork(); break;
         case 12: disConnectNetwork(); break;
         case 13: sendTestData(); break;
+        default: ;
         }
         _id -= 14;
     }
     return _id;
 }
+QT_END_MOC_NAMESPACE
