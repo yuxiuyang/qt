@@ -27,7 +27,7 @@ NibpWindow::NibpWindow(QWidget *parent) :
     assert(m_nibpMgr);
     m_nibpMgr->setWindow((void*)this);
     m_nibpMgr->setFrequency(1);
-    m_nibpMgr->setReadNum(9);
+    m_nibpMgr->setReadNum(4);
 
     ui->pFre_edit->append(QString::number(m_nibpMgr->getFrequency()));
     ui->pTm_edit->append("1000");
@@ -113,6 +113,9 @@ void NibpWindow::rcOk_click(){
         return;
     }
     cout<<"val="<<val<<endl;
+
+    ui->pMsg_Txt->clear();
+    ui->pStatistics_txt->clear();
     m_nibpMgr->setReadNum(val);
 }
 
@@ -170,26 +173,25 @@ void NibpWindow::displayStatisicsResult(){
     appendStatisticsMsg("------------caculator  start ------------");
     TESTMSG* msg = m_nibpMgr->getTestMsg();
     static char buf[100]={0};
-    sprintf(buf,"timeSum=%ld",msg->timeSum);
+    sprintf(buf,"used time=%ld",msg->usedtimeSum);
     appendStatisticsMsg(buf);
     sprintf(buf,"readSum=%ld",msg->readSum);
     appendStatisticsMsg(buf);
     sprintf(buf,"times=%ld",msg->times);
     appendStatisticsMsg(buf);
 
-    sprintf(buf,"arg_time1=%4.1f (ms each)",(float)msg->timeSum/(float)msg->times);
+    sprintf(buf,"arg_time1=%4.1f (ms)",(float)msg->usedtimeSum/(float)msg->times);
     appendStatisticsMsg(buf);
 
-    sprintf(buf,"arg_time2=%4.1f (ts/s)",((float)msg->times/(float)msg->timeSum)*1000.);
-    appendStatisticsMsg(buf);
+//    sprintf(buf,"arg_time2=%4.1f (ts/s)",((float)msg->times/(float)msg->timeSum)*1000.);
+//    appendStatisticsMsg(buf);
 
     sprintf(buf,"arg_read1=%4.1f (one each)",(float)msg->readSum/(float)msg->times);
     appendStatisticsMsg(buf);
-    sprintf(buf,"arg_read2=%4.1f (n/s)",(float)msg->readSum/(float)msg->times*1000);
+    sprintf(buf,"arg_read2=%4.1f (n/s)",(float)msg->readSum/((float)msg->usedtimeSum/1000));
     appendStatisticsMsg(buf);
 
     appendStatisticsMsg("------------caculator  end ------------");
-    m_nibpMgr->stopTest();
     /*QTextCursor cs=ui.chat_edit->textCursor();
                 cs.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
                 cs.movePosition(QTextCursor::NextBlock,QTextCursor::KeepAnchor, iLines);

@@ -13,7 +13,7 @@ NibpMgr::NibpMgr()
 
     m_network = new Network();
     assert(m_network);
-    assert(openFile("datafile/spo2data.txt"));
+    assert(openFile("datafile/nibpdata.txt"));
 }
 NibpMgr::~NibpMgr()
 {
@@ -33,12 +33,13 @@ void NibpMgr::sendData(const BYTE* buf,int len){
 
 void NibpMgr::onTimer(){
 
-    read();
-    display();
+    int readnum = read();
 
-    //send to data  to server
-
-
+    int time = test(readnum);
+    if(time!=0){ // have not start test
+        printf("NibpMgr::onTimer   interval=%dms times=%d",time,m_testMsg.times);
+        display();
+    }
 }
 
 int NibpMgr::recvData(int fd){
@@ -46,12 +47,11 @@ int NibpMgr::recvData(int fd){
 }
 
 void NibpMgr::display(){
-    if(!BasicMgr::test()) return; // have not start test
 
-    if(m_testMsg.timeSum >= REFRESH_TIME){//auto display to ui
+    if(m_testMsg.usedtimeSum >= REFRESH_TIME){//auto display to ui
          ((NibpWindow*)m_Ui)->displayStatisicsResult();
          m_testMsg.times = 0;
-         m_testMsg.timeSum = 0;
+         m_testMsg.usedtimeSum = 0;
          m_testMsg.readSum = 0;
      }
     if(isShowData())

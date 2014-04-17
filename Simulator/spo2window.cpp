@@ -110,13 +110,6 @@ void Spo2Window::freCancel_click(){
     ui->pFre_edit->setEnabled(true);
     ui->pFreOk_btn->setFocus();
 
-
-//    BYTE data[100]={0};
-//    que.getDatas(data,3);
-//    //cout<<data[0]<<" "<<data[1]<<" ";
-//    char buf[100]={0};
-//    sprintf(buf,"%d %d %d ",data[0],data[1],data[2]);
-//    ui->pMsg_Txt->insertPlainText(buf);
 }
 
 void Spo2Window::rcOk_click(){
@@ -133,6 +126,8 @@ void Spo2Window::rcOk_click(){
         return;
     }
     cout<<"val="<<val<<endl;
+    ui->pMsg_Txt->clear();
+    ui->pStatistics_txt->clear();
     m_spo2Mgr->setReadNum(val);
 }
 
@@ -182,26 +177,28 @@ void Spo2Window::showReadDataCheckStateChanged(int state){
 }
 
 void Spo2Window::displayStatisicsResult(){
+    appendStatisticsMsg("------------caculator  start ------------");
     TESTMSG* msg = m_spo2Mgr->getTestMsg();
     static char buf[100]={0};
-    sprintf(buf,"timeSum=%ld",msg->timeSum);
+    sprintf(buf,"used time=%ld",msg->usedtimeSum);
     appendStatisticsMsg(buf);
     sprintf(buf,"readSum=%ld",msg->readSum);
     appendStatisticsMsg(buf);
     sprintf(buf,"times=%ld",msg->times);
     appendStatisticsMsg(buf);
-    appendStatisticsMsg("------------caculator------------");
 
-    sprintf(buf,"arg_time1=%4.1f (ms each)",(float)msg->timeSum/(float)msg->times);
+    sprintf(buf,"arg_time1=%4.1f (ms)",(float)msg->usedtimeSum/(float)msg->times);
     appendStatisticsMsg(buf);
 
-    sprintf(buf,"arg_time2=%4.1f (ts/s)",((float)msg->times/(float)msg->timeSum)*1000.);
-    appendStatisticsMsg(buf);
+//    sprintf(buf,"arg_time2=%4.1f (ts/s)",((float)msg->times/(float)msg->timeSum)*1000.);
+//    appendStatisticsMsg(buf);
 
     sprintf(buf,"arg_read1=%4.1f (one each)",(float)msg->readSum/(float)msg->times);
     appendStatisticsMsg(buf);
-    sprintf(buf,"arg_read2=%4.1f (n/s)",(float)msg->readSum/(float)msg->times*1000);
+    sprintf(buf,"arg_read2=%4.1f (n/s)",(float)msg->readSum/((float)msg->usedtimeSum/1000));
     appendStatisticsMsg(buf);
+
+    appendStatisticsMsg("------------caculator  end ------------");
 
     /*QTextCursor cs=ui.chat_edit->textCursor();
                 cs.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);

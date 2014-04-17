@@ -26,17 +26,21 @@ Spo2Mgr::~Spo2Mgr()
 }
 void Spo2Mgr::onTimer(){
 
-    read();
-    display();
+//    int readnum = read();
+//
+//    int time = test(readnum);
+//    if(time!=0){ // have not start test
+//        printf("NibpMgr::onTimer   interval=%dms times=%d",time,m_testMsg.times);
+//        display();
+//    }
 
 }
 void Spo2Mgr::display(){
-    if(!BasicMgr::test()) return; // have not start test
 
-    if(m_testMsg.timeSum >= REFRESH_TIME){//auto display to ui
+    if(m_testMsg.usedtimeSum >= REFRESH_TIME){//auto display to ui
          ((Spo2Window*)m_Ui)->displayStatisicsResult();
          m_testMsg.times = 0;
-         m_testMsg.timeSum = 0;
+         m_testMsg.usedtimeSum = 0;
          m_testMsg.readSum = 0;
      }
     if(isShowData())

@@ -12,7 +12,7 @@
 #define MAX_BUF 1024
 #define READ_WRITE_INTEVAL 30//the interval beweent read and write  to arrived a blance.
 struct TESTMSG{
-    unsigned long int timeSum;//the totally of interval to call timer
+    unsigned long int usedtimeSum;//the totally of interval to call timer
     unsigned long int readSum;//read txt data totally
     int times;//count
 
@@ -20,7 +20,7 @@ struct TESTMSG{
     bool isShowData;//weather show the txt data.
     bool isFirst;//just first to call
     TESTMSG(){
-        timeSum = 0;
+        usedtimeSum = 0;
         readSum = 0;
         times = 0;
         isStart = false;
@@ -38,14 +38,12 @@ public:
     virtual void display()=0;//display
     virtual void sendData(const BYTE* buf,int len)=0;
     void setFrequency(int fre);
+    void setReadNum(int num);
     int getFrequency(){
         return m_iFrequency;
     }
-    void setReadNum(int num){
-        m_iReadNum = num;
-    }
     int getReadNum(){
-        return m_iReadNum;
+        return m_iReadNum/3;
     }
     int getTimeout(){
         return m_iTimeout;
@@ -74,7 +72,7 @@ public:
     //fellowing is test info
     struct timeval m_tStartTimer;//used to save cur calling onTimer fun's time.
     TESTMSG m_testMsg;
-    bool test();
+    int test(int num);
 
     virtual void generateTestFile();//
     virtual void append(const char* data);
@@ -87,7 +85,7 @@ protected:
     bool openFile(const char* filename);
     bool isOpenFile();
     bool closeFile();
-    virtual void read();
+    virtual int read();//return the read count
     char m_readBuf[MAX_READ_TXT];//just tmp
     BYTE m_recieveBuf[MAX_READ_TXT];//just tmp
     Queue m_dataQueue;

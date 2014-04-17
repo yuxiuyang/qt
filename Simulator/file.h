@@ -21,6 +21,10 @@ public:
     long getFileSize();
     int flush();//the cache is written to file
     void clear();//clear all data in the file
+    void reset(){
+        m_readCurPos = 0;
+    }
+
     /*
      返回值列表：
      -1 文件结束；

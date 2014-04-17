@@ -21,29 +21,35 @@ void BasicMgr::setFrequency(int fre){
     if(m_iTimeout%2)//if not 2's Integer multiples
         m_iTimeout+=1;//m_iTimeout have to >=2 ms
 }
+void BasicMgr::setReadNum(int num){
+    m_iReadNum = num*3;
+    printf("m_iReadNum=%d",m_iReadNum);
+    assert(m_file);
+    m_file->reset();
+}
 
-bool BasicMgr::test(){
+int BasicMgr::test(int num){
     if(m_testMsg.isStart){
         if(m_testMsg.isFirst){
             m_testMsg.isFirst =false;
             gettimeofday(&m_tStartTimer,NULL);
-            return false;
+            return 0;
         }
 
         struct timeval curTime;
         gettimeofday(&curTime,NULL);
         int timeuse = (1000*1000*(curTime.tv_sec-m_tStartTimer.tv_sec)+(curTime.tv_usec-m_tStartTimer.tv_usec))/1000;
 
-        m_testMsg.timeSum += timeuse;
+        m_testMsg.usedtimeSum += timeuse;
         m_testMsg.times += 1;
+        m_testMsg.readSum += num;
         char buf[100]={0};
-        sprintf(buf,"Spo2Mgr::onTimer   interval=%dms times=%d",timeuse,m_testMsg.times);
         cout<<buf<<endl;
 
         m_tStartTimer = curTime;
-        return true;
+        return timeuse;
     }
-    return false;
+    return 0;
 }
 void BasicMgr::generateTestFile(){//
     m_file->clear();//clear file
@@ -65,10 +71,10 @@ void BasicMgr::append(const char* data){//
     m_file->flush();
 }
 
-void BasicMgr::read(){
+int BasicMgr::read(){
     if(!isOpenFile()){
         cout<<"read failure  please call openFile to create a file"<<endl;
-        return;
+        return 0;
     }
     memset(m_readBuf,0,sizeof(m_readBuf));
     assert(m_iReadNum<MAX_BUF);
@@ -80,13 +86,13 @@ void BasicMgr::read(){
     resolveProtocol(m_readBuf,len,m_recieveBuf,recieveBuf_len);
     if(recieveBuf_len){
         //m_dataQueue.push(m_recieveBuf,recieveBuf_len);
-        m_testMsg.readSum += recieveBuf_len;
         printf("m_iReadNum=%d,len=%d,recieveBuf_len=%d,thread=%lu\n",m_iReadNum,len,recieveBuf_len,pthread_self());
         sendData(m_recieveBuf,recieveBuf_len);
     }else{
         cout<<"resolveProtocol error happen"<<endl;
     }
 
+    return recieveBuf_len;
     //cout<<"read   m_readBuf="<<m_readBuf<<endl;
 }
 bool BasicMgr::openFile(const char* filename){
