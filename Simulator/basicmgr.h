@@ -7,7 +7,7 @@
 #include "file.h"
 #include "network.h"
 #include "../common/recvobject.h"
-
+#include "../common/datadev.h"
 #define MAX_READ_TXT 3*300+1
 #define MAX_BUF 1024
 #define READ_WRITE_INTEVAL 30//the interval beweent read and write  to arrived a blance.
@@ -36,6 +36,7 @@ public:
 
     virtual void onTimer()=0;
     virtual void display()=0;//display
+    virtual void sendData(const BYTE* buf,int len)=0;
     void setFrequency(int fre);
     int getFrequency(){
         return m_iFrequency;
@@ -79,8 +80,6 @@ public:
     virtual void append(const char* data);
     bool connect();
     bool disConnect();
-
-    bool sendTestData(const char* buf,int len);
 
 
     void analyseCmd(int cmd,void* wparam,void* lparam);

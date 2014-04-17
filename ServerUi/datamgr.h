@@ -12,6 +12,8 @@ public:
 public:
     int open_block();
     bool anal_pag(const BYTE* buf,const int len);
+    bool anal_DataPag(const BYTE* buf,const int len);
+    bool anal_ConnectPag(const BYTE* buf,const int len);
     void setWindow(void*);
     void handle(const BYTE* buf,int len);
 protected:

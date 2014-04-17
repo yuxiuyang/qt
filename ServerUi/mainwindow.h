@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "network_server.h"
 #include "../common/datadev.h"
+#include "datamgr.h"
 #include <QMutex>
 #include <queue>
 using namespace std;
@@ -26,7 +27,12 @@ public Q_SLOTS:
 
     void appendMsg(const char* msg);
     void appendData(const char* msg);
+    void appendData(const BYTE* msg,const int len);
+    void radioChange();
 
+    ClientType_ getClientType(){
+        return m_dataType;
+    }
 
     void sendTimer();
 protected:

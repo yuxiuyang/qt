@@ -25,16 +25,10 @@ NibpMgr::~NibpMgr()
     }
     assert(closeFile());
 }
-void NibpMgr::sendData(BYTE* buf,int len){
-    Msg_ msg;
-    msg.type = Data_Msg;
-    msg.dataMsg.type = NIBP_CLIENT;
-    memcpy(msg.dataMsg.buf,buf,len);
-    msg.dataMsg.buf_len = len;
-    msg.dataMsg.comeForm = PC_Simulator_Link;
-
+void NibpMgr::sendData(const BYTE* buf,int len){
     //cout<<"nibpmgr  senddata"<<endl;
-    DataDev::getInstance()->sendData(m_network->getSockFd(),buf,len);
+    if(m_network->getConnectState())
+        DataDev::getInstance()->sendData(m_network->getSockFd(),Data_Msg,NIBP_CLIENT,PC_Simulator_Link,buf,len);
 }
 
 void NibpMgr::onTimer(){
@@ -47,8 +41,8 @@ void NibpMgr::onTimer(){
 
 }
 
-void NibpMgr::recvData(int fd){
-
+int NibpMgr::recvData(int fd){
+    return 0;
 }
 
 void NibpMgr::display(){

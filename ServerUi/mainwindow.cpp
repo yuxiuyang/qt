@@ -13,6 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pClearDisplay_btn, SIGNAL(clicked()), this, SLOT(clearDisplayMsg_click()));
     connect(ui->pExit_btn,SIGNAL(clicked()),this,SLOT(exit_click()));
     connect( m_pTestTimer, SIGNAL(timeout()), this, SLOT(sendTimer()) );
+
+    connect(ui->pNibp_rb, SIGNAL(clicked(bool)), this, SLOT(radioChange()));
+    connect(ui->pSpo2_rb, SIGNAL(clicked(bool)), this, SLOT(radioChange()));
+    connect(ui->pEcg_rb, SIGNAL(clicked(bool)), this, SLOT(radioChange()));
+
     ui->pStart_btn->setEnabled(true);
     ui->pStop_btn->setEnabled(false);
 
@@ -29,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    m_dataType = SPO2_CLIENT;
+    m_dataType = NIBP_CLIENT;
+    ui->pNibp_rb->setChecked(true);
 
     m_pTestTimer->start(200);
 }
@@ -50,6 +56,16 @@ void MainWindow::changeEvent(QEvent *e)
         break;
     }
 }
+void MainWindow::radioChange(){
+    if(ui->pNibp_rb==sender()){
+        m_dataType = NIBP_CLIENT;
+    }else if(ui->pSpo2_rb==sender()){
+        m_dataType = SPO2_CLIENT;
+    }else if(ui->pEcg_rb==sender()){
+        m_dataType = ECG_CLIENT;
+    }
+}
+
 void MainWindow::start_click(){
     ui->pStart_label->setText("server running");
     ui->pStart_btn->setEnabled(false);
@@ -89,8 +105,19 @@ void MainWindow::exit_click(){
 }
 void MainWindow::appendData(const char* msg){
     m_pMutex.lock();
-   m_queDataLine.push(msg);
-   m_pMutex.unlock();
+    m_queDataLine.push(msg);
+    m_pMutex.unlock();
+}
+void MainWindow::appendData(const BYTE* msg,const int len){
+    m_pMutex.lock();
+    string strBuf="";
+    char tmp[10]={0};
+    for(int i=0;i<len;i++){
+        sprintf(tmp,"%02x ",msg[i]);
+        strBuf += tmp;
+    }
+    m_queDataLine.push(strBuf.c_str());
+    m_pMutex.unlock();
 }
 
 void MainWindow::sendTimer(){

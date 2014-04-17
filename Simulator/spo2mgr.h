@@ -9,7 +9,8 @@ public:
 
 public:
     void onTimer();
-    void recvData(int fd);
+    int recvData(int fd);
+    void sendData(const BYTE* buf,int len);
     void setWindow(void* win){
         assert(win);
         m_Ui = win;

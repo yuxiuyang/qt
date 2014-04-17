@@ -69,11 +69,6 @@ void DataDev::recvData(){
         for(int i=0;i<m_objectFdVec.size();i++){
             if (FD_ISSET(m_objectFdVec[i]->fd, &fdSet)) {
                 //cout<<"select success m_objectFdVec[i]="<<m_objectFdVec[i]<<endl;
-//                if(CallBack_)
-//                  CallBack_(m_objectFdVec[i]);
-//                else{
-//                    cout<<"please init callback first"<<endl;
-//                }
                 assert(m_objectFdVec[i]->object);
                 m_objectFdVec[i]->object->recvData(m_objectFdVec[i]->fd);
             }

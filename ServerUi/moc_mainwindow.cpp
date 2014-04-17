@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Thu Apr 17 13:57:59 2014
+** Created: Thu Apr 17 16:47:58 2014
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -38,7 +38,10 @@ static const uint qt_meta_data_MainWindow[] = {
       76,   11,   11,   11, 0x0a,
      104,  100,   11,   11, 0x0a,
      127,  100,   11,   11, 0x0a,
-     151,   11,   11,   11, 0x0a,
+     159,  151,   11,   11, 0x0a,
+     187,   11,   11,   11, 0x0a,
+     213,   11,  201,   11, 0x0a,
+     229,   11,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -48,6 +51,8 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "exit_click()\0clearConnectMsg_click()\0"
     "clearDisplayMsg_click()\0msg\0"
     "appendMsg(const char*)\0appendData(const char*)\0"
+    "msg,len\0appendData(const BYTE*,int)\0"
+    "radioChange()\0ClientType_\0getClientType()\0"
     "sendTimer()\0"
 };
 
@@ -87,10 +92,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: clearDisplayMsg_click(); break;
         case 5: appendMsg((*reinterpret_cast< const char*(*)>(_a[1]))); break;
         case 6: appendData((*reinterpret_cast< const char*(*)>(_a[1]))); break;
-        case 7: sendTimer(); break;
+        case 7: appendData((*reinterpret_cast< const BYTE*(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
+        case 8: radioChange(); break;
+        case 9: { ClientType_ _r = getClientType();
+            if (_a[0]) *reinterpret_cast< ClientType_*>(_a[0]) = _r; }  break;
+        case 10: sendTimer(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 11;
     }
     return _id;
 }

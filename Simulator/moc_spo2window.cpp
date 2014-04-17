@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'spo2window.h'
 **
-** Created: Thu Apr 17 14:36:37 2014
+** Created: Thu Apr 17 16:49:08 2014
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_Spo2Window[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -44,7 +44,6 @@ static const uint qt_meta_data_Spo2Window[] = {
      232,  212,   11,   11, 0x0a,
      259,   11,   11,   11, 0x0a,
      276,   11,   11,   11, 0x0a,
-     296,   11,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -58,7 +57,6 @@ static const char qt_meta_stringdata_Spo2Window[] = {
     "showReadDataCheckStateChanged(int)\0"
     "buf\0showData(char*)\0appendStatisticsMsg(char*)\0"
     "connectNetwork()\0disConnectNetwork()\0"
-    "sendTestData()\0"
 };
 
 const QMetaObject Spo2Window::staticMetaObject = {
@@ -103,10 +101,9 @@ int Spo2Window::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 10: appendStatisticsMsg((*reinterpret_cast< char*(*)>(_a[1]))); break;
         case 11: connectNetwork(); break;
         case 12: disConnectNetwork(); break;
-        case 13: sendTestData(); break;
         default: ;
         }
-        _id -= 14;
+        _id -= 13;
     }
     return _id;
 }

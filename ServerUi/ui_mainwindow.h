@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu Apr 17 12:02:57 2014
+** Created: Thu Apr 17 15:26:40 2014
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -19,6 +19,7 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTextBrowser>
 #include <QtGui/QToolBar>
@@ -38,6 +39,9 @@ public:
     QLabel *pStart_label;
     QPushButton *pStart_btn;
     QPushButton *pStop_btn;
+    QRadioButton *pNibp_rb;
+    QRadioButton *pEcg_rb;
+    QRadioButton *pSpo2_rb;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -74,10 +78,19 @@ public:
         pStop_btn = new QPushButton(centralWidget);
         pStop_btn->setObjectName(QString::fromUtf8("pStop_btn"));
         pStop_btn->setGeometry(QRect(340, 10, 99, 32));
+        pNibp_rb = new QRadioButton(centralWidget);
+        pNibp_rb->setObjectName(QString::fromUtf8("pNibp_rb"));
+        pNibp_rb->setGeometry(QRect(480, 80, 109, 22));
+        pEcg_rb = new QRadioButton(centralWidget);
+        pEcg_rb->setObjectName(QString::fromUtf8("pEcg_rb"));
+        pEcg_rb->setGeometry(QRect(480, 140, 109, 22));
+        pSpo2_rb = new QRadioButton(centralWidget);
+        pSpo2_rb->setObjectName(QString::fromUtf8("pSpo2_rb"));
+        pSpo2_rb->setGeometry(QRect(480, 110, 109, 22));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 32));
+        menuBar->setGeometry(QRect(0, 0, 600, 23));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -100,6 +113,9 @@ public:
         pStart_label->setText(QApplication::translate("MainWindow", "server is not start", 0, QApplication::UnicodeUTF8));
         pStart_btn->setText(QApplication::translate("MainWindow", "start", 0, QApplication::UnicodeUTF8));
         pStop_btn->setText(QApplication::translate("MainWindow", "stop", 0, QApplication::UnicodeUTF8));
+        pNibp_rb->setText(QApplication::translate("MainWindow", "NIBP", 0, QApplication::UnicodeUTF8));
+        pEcg_rb->setText(QApplication::translate("MainWindow", "ECG", 0, QApplication::UnicodeUTF8));
+        pSpo2_rb->setText(QApplication::translate("MainWindow", "SPO2", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

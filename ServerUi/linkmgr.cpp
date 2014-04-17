@@ -19,7 +19,7 @@ LinkMgr::~LinkMgr(){
 int LinkMgr::getServerFd(){
     return m_serverNetwork.getServerSocketFd();
 }
-void LinkMgr::waitAcceptConnect(){
+int LinkMgr::waitAcceptConnect(){
     int clientFd = m_serverNetwork.waitAccept();
     if(-1 == clientFd){
         cout<<"clientFd=-1 accept failure errno="<<errno<<endl;
@@ -27,10 +27,11 @@ void LinkMgr::waitAcceptConnect(){
         if(EAGAIN == errno){
 
         }
-        return;
+        return -10;
     }
     recvLinkMsg(Connect_Success,clientFd);
 
+    return 0;
 }
 
 bool LinkMgr::registerSocketFd(int socketFd){
@@ -78,12 +79,29 @@ bool LinkMgr::removeClientSocket(int clientSocket){
         m_clientConnectMsgVec.erase(iter);
 
         unregisterSocketFd(clientSocket);
+        removeFd(clientSocket);
         return true;
     }
 
     printf("has not exist\n");
     return false;
 
+}
+bool LinkMgr::addClientSocketFd(int clientFd){
+    assert(clientFd>0);
+    char msgBuf[100]={0};
+    //manage client FD
+    if(!findClient(clientFd)){// not exsit
+       m_clientConnectMsgVec.push_back(clientFd);
+       sprintf(msgBuf,"accept client =%d success",clientFd);
+       ((MainWindow*)m_window)->appendMsg(msgBuf);
+       addFd(clientFd);
+    }else{
+        cout<<"this client="<<clientFd<<"has exist"<<endl;
+        return true;
+    }
+    cout<<"accept socket success socket="<<clientFd<<endl;
+     return true;
 }
 void LinkMgr::setWindow(void* win){
     m_window = win;
@@ -108,42 +126,22 @@ void LinkMgr::getClientSocketFd(vector<int>* vec){
         vec->push_back(*iter);
     }
 }
-void LinkMgr::recvData(int Fd){
+int LinkMgr::recvData(int Fd){
     if(Fd == getServerFd()){
-        waitAcceptConnect();
-        return;
+        return waitAcceptConnect();
     }
     BYTE tmpbuf[200]={0};
     int len = recv(Fd,&tmpbuf,sizeof(tmpbuf),0);
     if (len <= 0) {        // client close
           recvLinkMsg(Connect_Close,Fd);
-          removeFd(Fd);
-          //cout<<""
-          //FD_CLR(m_tmpVec[i], &fdSet);
+          return -1;
      } else {        // receive data
-           cout<<"server   success rec data from client     fd="<<socket<<endl;
-           //((MainWindow*)pThis->m_pLinkMgr->m_window)->appendData(strBuf.c_str());
+           //cout<<"server   success rec data from client     fd="<<socket<<endl;
            if(m_pDataMgr)
                 ((DataMgr*)m_pDataMgr)->handle(tmpbuf,len);
     }
+     return 0;
 
-}
-
-bool LinkMgr::addClientSocketFd(int clientFd){
-    assert(clientFd>0);
-    char msgBuf[100]={0};
-    //manage client FD
-    if(!findClient(clientFd)){// not exsit
-       m_clientConnectMsgVec.push_back(clientFd);
-       sprintf(msgBuf,"accept client =%d success",clientFd);
-       ((MainWindow*)m_window)->appendMsg(msgBuf);
-       addFd(clientFd);
-    }else{
-        cout<<"this client="<<clientFd<<"has exist"<<endl;
-        return true;
-    }
-    cout<<"accept socket success socket="<<clientFd<<endl;
-     return true;
 }
 void LinkMgr::recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error){
     char msgBuf[100]={0};

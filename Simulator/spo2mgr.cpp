@@ -43,6 +43,10 @@ void Spo2Mgr::display(){
         ((Spo2Window*)m_Ui)->showData(m_readBuf);
 
 }
-void Spo2Mgr::recvData(int fd){
-
+int Spo2Mgr::recvData(int fd){
+    return 0;
+}
+void Spo2Mgr::sendData(const BYTE* buf,int len){
+    if(m_network->getConnectState())
+        DataDev::getInstance()->sendData(m_network->getSockFd(),Data_Msg,SPO2_CLIENT,PC_Simulator_Link,buf,len);
 }

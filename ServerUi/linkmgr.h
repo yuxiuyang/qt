@@ -34,11 +34,11 @@ public:
     void recvLinkMsg(CONNECT_MSG_TYPE type,int clientFd,int error=-1);
 
     //accept client connect
-    void waitAcceptConnect();
+    int waitAcceptConnect();
 
     int getServerFd();
 
-    void recvData(int Fd);
+    int recvData(int Fd);
 private:
     vector<int> m_clientConnectMsgVec;
     vector<int> m_registerClientSocketFdVec;

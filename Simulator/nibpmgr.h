@@ -9,7 +9,8 @@ public:
 
 public:
     void onTimer();
-    void recvData(int fd);
+    int recvData(int fd);
+    void sendData(const BYTE* msg,int len);
 
     void setWindow(void* win){
         assert(win);
@@ -17,7 +18,6 @@ public:
     }
     void display();
 
-    void sendData(BYTE* msg,int len);
 protected:
 
 

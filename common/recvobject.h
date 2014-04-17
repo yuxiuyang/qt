@@ -7,7 +7,7 @@ public:
     RecvObject();
     virtual ~RecvObject();
 
-    virtual void recvData(int fd)=0;
+    virtual int recvData(int fd)=0;
 
     bool addFd(int fd);
     bool removeFd(int fd);

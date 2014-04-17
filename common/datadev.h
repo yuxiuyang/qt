@@ -9,7 +9,7 @@
  #include <QMutex>
 #include "l_jn.h"
 #include <algorithm>//使用泛型算法必须包含头文件algorithm
-#include "datamgr.h"
+#include "../include/define.h"
 #include "recvobject.h"
 using namespace std;
 class DataDev;

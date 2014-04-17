@@ -161,11 +161,6 @@ void Spo2Window::disConnectNetwork(){
 
     m_spo2Mgr->disConnect();
 }
-void Spo2Window::sendTestData(){
-    char buf[]="spo2 window data";
-    printf("send buf=%s\n",buf);
-    m_spo2Mgr->sendTestData(buf,sizeof(buf));
-}
 
 void Spo2Window::startTestCheckStateChanged(int state){
     if(ui->pST_check->isChecked()){

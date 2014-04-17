@@ -13,6 +13,9 @@ public:
     int getSockFd(){
         return m_sockFd;
     }
+    bool getConnectState(){
+        return m_sockFd==-1?false:true;
+    }
 
 protected:
     int m_sockFd;

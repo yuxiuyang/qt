@@ -35,7 +35,6 @@ public Q_SLOTS:
     void appendStatisticsMsg(char* buf);
     void connectNetwork();
     void disConnectNetwork();
-    void sendTestData();
 
 public:
     //display Statistics result

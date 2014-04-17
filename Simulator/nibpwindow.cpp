@@ -86,21 +86,10 @@ void NibpWindow::freOk_click(){
         ui->pFre_edit->append("error");
         return;
     }
-    //ui->pMsg_Txt->append(str);
     m_nibpMgr->setFrequency(val);
 
     ui->pTm_edit->clear();
     ui->pTm_edit->append(QString::number(m_nibpMgr->getTimeout()));
-
-
-//    char buf[100]={0};
-//    sprintf(buf,"3214");
-//    cout<<"start buf="<<buf<<endl;
-//    BYTE buf[5];
-//    for(int i=0;i<5;i++){
-//        buf[i] = i+1;
-//    }
-//    que.push(buf,5);
 }
 
 void NibpWindow::freCancel_click(){
@@ -108,14 +97,6 @@ void NibpWindow::freCancel_click(){
     ui->pFreCancel_btn->setEnabled(false);
     ui->pFre_edit->setEnabled(true);
     ui->pFreOk_btn->setFocus();
-
-
-//    BYTE data[100]={0};
-//    que.getDatas(data,3);
-//    //cout<<data[0]<<" "<<data[1]<<" ";
-//    char buf[100]={0};
-//    sprintf(buf,"%d %d %d ",data[0],data[1],data[2]);
-//    ui->pMsg_Txt->insertPlainText(buf);
 }
 
 void NibpWindow::rcOk_click(){
@@ -163,7 +144,6 @@ void NibpWindow::disConnectNetwork(){
 void NibpWindow::sendTestData(){
     char buf[]="nibpwindow data";
     printf("send buf=%s\n",buf);
-    m_nibpMgr->sendTestData(buf,sizeof(buf));
 }
 
 void NibpWindow::startTestCheckStateChanged(int state){
@@ -175,17 +155,10 @@ void NibpWindow::startTestCheckStateChanged(int state){
     }
 }
 void NibpWindow::genarateNewDataCheckStateChanged(int state){
-//    if(ui->pGenerateData_check->isChecked()){
-//        m_nibpMgr->generateTestFile();
-//        cout<<"generate new data ok"<<endl;
-//    }
-    BYTE test[4];
-    for(int i=0;i<4;i++){
-        test[i] = i;
-        //printf("%02x ",test[i]);
+    if(ui->pGenerateData_check->isChecked()){
+        m_nibpMgr->generateTestFile();
+        cout<<"generate new data ok"<<endl;
     }
-   // printf("\n");
-    m_nibpMgr->sendData(test,4);
 }
 
 
@@ -194,6 +167,7 @@ void NibpWindow::showReadDataCheckStateChanged(int state){
 }
 
 void NibpWindow::displayStatisicsResult(){
+    appendStatisticsMsg("------------caculator  start ------------");
     TESTMSG* msg = m_nibpMgr->getTestMsg();
     static char buf[100]={0};
     sprintf(buf,"timeSum=%ld",msg->timeSum);
@@ -202,7 +176,6 @@ void NibpWindow::displayStatisicsResult(){
     appendStatisticsMsg(buf);
     sprintf(buf,"times=%ld",msg->times);
     appendStatisticsMsg(buf);
-    appendStatisticsMsg("------------caculator------------");
 
     sprintf(buf,"arg_time1=%4.1f (ms each)",(float)msg->timeSum/(float)msg->times);
     appendStatisticsMsg(buf);
@@ -215,6 +188,8 @@ void NibpWindow::displayStatisicsResult(){
     sprintf(buf,"arg_read2=%4.1f (n/s)",(float)msg->readSum/(float)msg->times*1000);
     appendStatisticsMsg(buf);
 
+    appendStatisticsMsg("------------caculator  end ------------");
+    m_nibpMgr->stopTest();
     /*QTextCursor cs=ui.chat_edit->textCursor();
                 cs.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
                 cs.movePosition(QTextCursor::NextBlock,QTextCursor::KeepAnchor, iLines);

@@ -71,13 +71,49 @@ void DataMgr::addBuf(const BYTE* buf,int len){
     }
 }
 bool DataMgr::anal_pag(const BYTE* buf,const int len){
-    string strBuf="";
-    char tmp[10]={0};
-    for(int i=0;i<len;i++){
-        sprintf(tmp,"%02x ",buf[i]);
-        strBuf += tmp;
+    switch(buf[2]){
+    case Data_Msg:
+        anal_DataPag(buf,len);
+        break;
+    case Link_Msg:
+        anal_ConnectPag(buf,len);
+        break;
+    default:
+        break;
     }
-    ((MainWindow*)m_pWindow)->appendData(strBuf.c_str());
+
+    return true;
+}
+
+bool DataMgr::anal_DataPag(const BYTE* buf,const int len){
+    switch(buf[3]){
+    case ECG_CLIENT:
+        break;
+    case SPO2_CLIENT:
+        break;
+    case CO2_CLIENT:
+        break;
+    case NIBP_CLIENT:
+        break;
+    case IBPCO_CLIENT:
+        break;
+    case CMD_CLIENT:
+        break;
+    case DISPLAY_CLIENT:
+        break;
+    default:
+        break;
+    }
+
+    if(buf[3] == ((MainWindow*)m_pWindow)->getClientType()){
+        ((MainWindow*)m_pWindow)->appendData(buf+5,len-7);
+    }
+    return true;
+}
+
+bool DataMgr::anal_ConnectPag(const BYTE* buf,const int len){
+
+    return true;
 }
 
 void DataMgr::setWindow(void* ww){

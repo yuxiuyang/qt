@@ -79,7 +79,10 @@ void BasicMgr::read(){
     int recieveBuf_len=0;
     resolveProtocol(m_readBuf,len,m_recieveBuf,recieveBuf_len);
     if(recieveBuf_len){
-        m_dataQueue.push(m_recieveBuf,recieveBuf_len);
+        //m_dataQueue.push(m_recieveBuf,recieveBuf_len);
+        m_testMsg.readSum += recieveBuf_len;
+        printf("m_iReadNum=%d,len=%d,recieveBuf_len=%d,thread=%lu\n",m_iReadNum,len,recieveBuf_len,pthread_self());
+        sendData(m_recieveBuf,recieveBuf_len);
     }else{
         cout<<"resolveProtocol error happen"<<endl;
     }
@@ -161,14 +164,6 @@ bool BasicMgr::connect(){
 bool BasicMgr::disConnect(){
     DataDev::getInstance()->removeFd(m_network->getSockFd());
     return m_network->disConnect();
-}
-bool BasicMgr::sendTestData(const char* buf,int len){
-    int ret = send(m_network->getSockFd(),buf,len,0);
-    if(ret<=0){
-        printf("send error errno=%d\n",errno);
-        return false;
-    }
-    return true;
 }
 void BasicMgr::analyseCmd(int cmd,void* wparam,void* lparam){
 
