@@ -1,13 +1,15 @@
 #include "linkmgr.h"
 #include <errno.h>
+#include "datamgr.h"
 #include "mainwindow.h"
 LinkMgr::LinkMgr(){
     m_window = NULL;
+    m_pDataMgr = NULL;
     m_initServerOk = m_serverNetwork.init();
 
     //start listen server
     assert(m_initServerOk);
-    DataDev::getInstance()->addFd(getServerFd());
+    addFd(getServerFd());
 }
 LinkMgr::~LinkMgr(){
     m_clientConnectMsgVec.clear();
@@ -106,6 +108,26 @@ void LinkMgr::getClientSocketFd(vector<int>* vec){
         vec->push_back(*iter);
     }
 }
+void LinkMgr::recvData(int Fd){
+    if(Fd == getServerFd()){
+        waitAcceptConnect();
+        return;
+    }
+    BYTE tmpbuf[200]={0};
+    int len = recv(Fd,&tmpbuf,sizeof(tmpbuf),0);
+    if (len <= 0) {        // client close
+          recvLinkMsg(Connect_Close,Fd);
+          removeFd(Fd);
+          //cout<<""
+          //FD_CLR(m_tmpVec[i], &fdSet);
+     } else {        // receive data
+           cout<<"server   success rec data from client     fd="<<socket<<endl;
+           //((MainWindow*)pThis->m_pLinkMgr->m_window)->appendData(strBuf.c_str());
+           if(m_pDataMgr)
+                ((DataMgr*)m_pDataMgr)->handle(tmpbuf,len);
+    }
+
+}
 
 bool LinkMgr::addClientSocketFd(int clientFd){
     assert(clientFd>0);
@@ -115,7 +137,7 @@ bool LinkMgr::addClientSocketFd(int clientFd){
        m_clientConnectMsgVec.push_back(clientFd);
        sprintf(msgBuf,"accept client =%d success",clientFd);
        ((MainWindow*)m_window)->appendMsg(msgBuf);
-       DataDev::getInstance()->addFd(clientFd);
+       addFd(clientFd);
     }else{
         cout<<"this client="<<clientFd<<"has exist"<<endl;
         return true;

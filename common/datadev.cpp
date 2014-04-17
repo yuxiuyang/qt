@@ -18,11 +18,11 @@ DataDev::DataDev(QObject *parent) :
 
     m_pthreadState = THREAD_STOP;
 
-    CallBack_ = NULL;
+    //CallBack_ = NULL;
     printf("this = %lu\n",this);
 }
 DataDev::~DataDev(){
-    m_fdVec.clear();
+    removeAll();
 }
 
 DataDev* DataDev::getInstance(){
@@ -47,12 +47,12 @@ void DataDev::recvData(){
        tv.tv_usec = 0;
 
         // add active connection to fd set
-       for(int i=0;i<m_fdVec.size();i++){
-           FD_SET(m_fdVec[i], &fdSet);
-           if(maxFd<m_fdVec[i]){
-               maxFd = m_fdVec[i];
+       for(int i=0;i<m_objectFdVec.size();i++){
+           FD_SET(m_objectFdVec[i]->fd, &fdSet);
+           if(maxFd<m_objectFdVec[i]->fd){
+               maxFd = m_objectFdVec[i]->fd;
            }
-           //cout<<"m_fdVec[i]="<<m_fdVec[i]<<"   maxFd="<<maxFd<<endl;
+           //cout<<"m_objectFdVec[i]="<<m_objectFdVec[i]<<"   maxFd="<<maxFd<<endl;
        }
 
         ret = select(maxFd + 1, &fdSet, NULL, NULL, &tv);
@@ -66,14 +66,16 @@ void DataDev::recvData(){
         }
 
         // check every active client fd in the set
-        for(int i=0;i<m_fdVec.size();i++){
-            if (FD_ISSET(m_fdVec[i], &fdSet)) {
-                //cout<<"select success m_fdVec[i]="<<m_fdVec[i]<<endl;
-                if(CallBack_)
-                  CallBack_(m_fdVec[i]);
-                else{
-                    cout<<"please init callback first"<<endl;
-                }
+        for(int i=0;i<m_objectFdVec.size();i++){
+            if (FD_ISSET(m_objectFdVec[i]->fd, &fdSet)) {
+                //cout<<"select success m_objectFdVec[i]="<<m_objectFdVec[i]<<endl;
+//                if(CallBack_)
+//                  CallBack_(m_objectFdVec[i]);
+//                else{
+//                    cout<<"please init callback first"<<endl;
+//                }
+                assert(m_objectFdVec[i]->object);
+                m_objectFdVec[i]->object->recvData(m_objectFdVec[i]->fd);
             }
         }
     }
@@ -109,10 +111,10 @@ BYTE tmpBuf[100];
 void DataDev::sendData(int socketFd,MsgType_ msgType,ClientType_ clientType,DataSource_ dataSource,const BYTE* buf,const int len){
     m_sendMutex.lock();
     tmpBuf[0] = 0x99;//start
-    tmpBuf[1] = msgType;
-    tmpBuf[2] = clientType;
-    tmpBuf[3] = dataSource;
-    tmpBuf[4] = len+7;//
+    tmpBuf[1] = len+7;//
+    tmpBuf[2] = msgType;
+    tmpBuf[3] = clientType;
+    tmpBuf[4] = dataSource;
 
     BYTE calSum = 0x00;
     for(int i=0;i<len;i++){
@@ -147,7 +149,7 @@ void DataDev::sendData_(void* pv){
 }
 
 
-bool DataDev::addFd(int fd){
+bool DataDev::addFd(RecvObject* object,int fd){
     m_socketFdMutex.lock();
     if(findFd(fd)){
         cout<<"addClientFd has exist fd="<<fd<<endl;
@@ -155,7 +157,11 @@ bool DataDev::addFd(int fd){
         return true;
     }
 
-    m_fdVec.push_back(fd);
+    RECVOBJECT_FD *p = new RECVOBJECT_FD;
+    p->object = object;
+    p->fd = fd;
+
+    m_objectFdVec.push_back(p);
     if(m_pthreadState!=THREAD_RUNNING){
         m_pthreadState = THREAD_RUNNING;
         start();
@@ -165,26 +171,42 @@ bool DataDev::addFd(int fd){
 
 bool DataDev::removeFd(int fd){
     m_socketFdMutex.lock();
-    vector<int>::iterator iter=find(m_fdVec.begin(),m_fdVec.end(),fd);
-    if(iter == m_fdVec.end()){
-        cout<<"removeClientFd  not find sockFd="<<fd<<endl;
-        m_socketFdMutex.unlock();
-        return true;
+
+    for(vector<RECVOBJECT_FD*>::iterator iter=m_objectFdVec.begin();iter!=m_objectFdVec.end();iter++){
+        if((*iter)->fd == fd){
+            delete *iter;
+            m_objectFdVec.erase(iter);
+        }
     }
-    if(m_fdVec.size() <= 1){//no cliend fd needed to listen
+    if(m_objectFdVec.empty()){//stop thread
         m_pthreadState = THREAD_STOP;
-        //stop();
     }
-    m_fdVec.erase(iter);
     m_socketFdMutex.unlock();
     return true;
 }
+bool DataDev::removeAll(RecvObject* object){//when object is null,and delete all.
+    m_socketFdMutex.lock();
 
-bool DataDev::findFd(int fd){
-    vector<int>::iterator iter=find(m_fdVec.begin(),m_fdVec.end(),fd);
-    if(iter == m_fdVec.end()){
-        //cout<<"findClientFd  not find sockFd="<<fd<<endl;
-        return false;
+    for(vector<RECVOBJECT_FD*>::iterator iter=m_objectFdVec.begin();iter!=m_objectFdVec.end();){
+        if(object){
+            if(object == (*iter)->object){
+                delete *iter;
+                m_objectFdVec.erase(iter);
+            }
+        }else{
+            delete *iter;
+            m_objectFdVec.erase(iter);
+        }
     }
+
+    m_socketFdMutex.unlock();
     return true;
+}
+RecvObject* DataDev::findFd(int fd){
+    for(int i=0;i<m_objectFdVec.size();i++){
+        if(fd == m_objectFdVec[i]->fd){
+            return m_objectFdVec[i]->object;
+        }
+    }
+    return NULL;
 }

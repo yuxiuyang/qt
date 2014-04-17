@@ -2,7 +2,7 @@
 #define DATAMGR_H
 #include "../include/define.h"
 #include "linkmgr.h"
-
+#include "../common/recvobject.h"
 class DataMgr
 {
 public:
@@ -10,20 +10,17 @@ public:
     ~DataMgr();
 
 public:
-    static void recvData(int fd);
+    int open_block();
+    bool anal_pag(const BYTE* buf,const int len);
     void setWindow(void*);
+    void handle(const BYTE* buf,int len);
 protected:
 
-    void setBuf(const BYTE* buf,int len);
-    void handle();
+    void addBuf(const BYTE* buf,int len);
 
 private:
-    LinkMgr* m_pLinkMgr;
-    static DataMgr* pThis;
-
     BYTE m_dataBuf[MAX_DATA_BUF];
-    int m_pWirte;
-    int m_pRead;
+    int m_curPos;
 
     void* m_pWindow;
 };

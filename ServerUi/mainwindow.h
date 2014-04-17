@@ -37,7 +37,7 @@ private:
 
 
     DataMgr* m_pDataMgr;
-    DataDev* m_pDataDev;
+    LinkMgr* m_pLinkMgr;
 
 
     ClientType_ m_dataType;

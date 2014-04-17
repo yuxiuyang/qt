@@ -17,8 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pStop_btn->setEnabled(false);
 
 
+
     m_pDataMgr = new DataMgr();
     m_pDataMgr->setWindow((void*)this);
+    m_pLinkMgr = new LinkMgr();
+    m_pLinkMgr->setWindow(this);
+    m_pLinkMgr->m_pDataMgr = m_pDataMgr;
+
+
 
 
 

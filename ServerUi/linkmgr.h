@@ -6,16 +6,18 @@
 #include <map>
 #include <vector>
 #include "network_server.h"
+#include "../common/recvobject.h"
 using namespace std;
 #define MAX_RECIEVE_BUF 1024
 
-class LinkMgr
+class LinkMgr:public RecvObject
 {
 public:
     LinkMgr();
     virtual ~LinkMgr();
 
     void* m_window;
+    void* m_pDataMgr;
 
 public:
     bool registerSocketFd(int socketFd);
@@ -36,7 +38,7 @@ public:
 
     int getServerFd();
 
-
+    void recvData(int Fd);
 private:
     vector<int> m_clientConnectMsgVec;
     vector<int> m_registerClientSocketFdVec;
