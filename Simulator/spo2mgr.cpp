@@ -39,9 +39,7 @@ void Spo2Mgr::display(){
 
     if(m_testMsg.usedtimeSum >= REFRESH_TIME){//auto display to ui
          ((Spo2Window*)m_Ui)->displayStatisicsResult();
-         m_testMsg.times = 0;
-         m_testMsg.usedtimeSum = 0;
-         m_testMsg.readSum = 0;
+         clearTestData();
      }
     if(isShowData())
         ((Spo2Window*)m_Ui)->showData(m_readBuf);

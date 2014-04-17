@@ -79,7 +79,7 @@ void NibpWindow::freOk_click(){
     ui->pFreCancel_btn->setFocus();
 
     QString str = ui->pFre_edit->toPlainText();
-
+//printf("freOk_click str = %s\n",str.toStdString().c_str());
     bool toIntOk = false;
     int val = str.toInt(&toIntOk,10);
     if(!toIntOk){
@@ -87,7 +87,7 @@ void NibpWindow::freOk_click(){
         return;
     }
     m_nibpMgr->setFrequency(val);
-
+cout<<"freOk_click src="<<str.toStdString().c_str()<<"val="<<val<<endl;
     ui->pTm_edit->clear();
     ui->pTm_edit->append(QString::number(m_nibpMgr->getTimeout()));
 }
@@ -105,18 +105,19 @@ void NibpWindow::rcOk_click(){
     ui->pRc_edit->setEnabled(false);
     ui->pRcCancel_btn->setFocus();
 
-    QString str = ui->pFre_edit->toPlainText();
+    QString str = ui->pRc_edit->toPlainText();
+
+
     bool toIntOk = false;
     int val = str.toInt(&toIntOk,10);
     if(!toIntOk){
         ui->pFre_edit->append("error");
         return;
     }
-    cout<<"val="<<val<<endl;
-
+    m_nibpMgr->setReadNum(val);
+cout<<"rcOk_click src="<<str.toStdString().c_str()<<"val="<<val<<endl;
     ui->pMsg_Txt->clear();
     ui->pStatistics_txt->clear();
-    m_nibpMgr->setReadNum(val);
 }
 
 void NibpWindow::rcCancel_click(){

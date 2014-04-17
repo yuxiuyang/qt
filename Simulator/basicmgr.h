@@ -18,14 +18,14 @@ struct TESTMSG{
 
     bool isStart;//start to test
     bool isShowData;//weather show the txt data.
-    bool isFirst;//just first to call
+    bool isFrist;//just first to call
     TESTMSG(){
         usedtimeSum = 0;
         readSum = 0;
         times = 0;
         isStart = false;
         isShowData = false;
-        isFirst = true;
+        isFrist = true;
     }
 };
 
@@ -53,8 +53,9 @@ public:
     }
     void startTest(){
         m_testMsg.isStart = true;
-        m_testMsg.isFirst = true;
+        m_testMsg.isFrist = true;
     }
+    void clearTestData();
     void setShowDataSign(bool show){
         m_testMsg.isShowData = show;
     }
@@ -64,6 +65,7 @@ public:
 
     void stopTest(){
         m_testMsg.isStart = false;
+        m_testMsg.isFrist = false;
     }
 
     int m_iCurTime;//ms use in timer.record cur time

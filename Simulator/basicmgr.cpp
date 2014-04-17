@@ -23,15 +23,15 @@ void BasicMgr::setFrequency(int fre){
 }
 void BasicMgr::setReadNum(int num){
     m_iReadNum = num*3;
-    printf("m_iReadNum=%d",m_iReadNum);
     assert(m_file);
     m_file->reset();
+    clearTestData();
 }
 
 int BasicMgr::test(int num){
     if(m_testMsg.isStart){
-        if(m_testMsg.isFirst){
-            m_testMsg.isFirst =false;
+        if(m_testMsg.isFrist){
+            m_testMsg.isFrist =false;
             gettimeofday(&m_tStartTimer,NULL);
             return 0;
         }
@@ -173,4 +173,10 @@ bool BasicMgr::disConnect(){
 }
 void BasicMgr::analyseCmd(int cmd,void* wparam,void* lparam){
 
+}
+
+void BasicMgr::clearTestData(){
+    m_testMsg.usedtimeSum = 0;
+    m_testMsg.readSum = 0;
+    m_testMsg.times = 0;
 }

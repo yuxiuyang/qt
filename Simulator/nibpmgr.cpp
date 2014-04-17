@@ -37,7 +37,7 @@ void NibpMgr::onTimer(){
 
     int time = test(readnum);
     if(time!=0){ // have not start test
-        printf("NibpMgr::onTimer   interval=%dms times=%d",time,m_testMsg.times);
+        printf("NibpMgr::onTimer   interval=%dms    times=%d\n",time,m_testMsg.times);
         display();
     }
 }
@@ -50,9 +50,7 @@ void NibpMgr::display(){
 
     if(m_testMsg.usedtimeSum >= REFRESH_TIME){//auto display to ui
          ((NibpWindow*)m_Ui)->displayStatisicsResult();
-         m_testMsg.times = 0;
-         m_testMsg.usedtimeSum = 0;
-         m_testMsg.readSum = 0;
+         clearTestData();
      }
     if(isShowData())
         ((NibpWindow*)m_Ui)->showData(m_readBuf);
