@@ -86,7 +86,7 @@ int BasicMgr::read(){
     resolveProtocol(m_readBuf,len,m_recieveBuf,recieveBuf_len);
     if(recieveBuf_len){
         //m_dataQueue.push(m_recieveBuf,recieveBuf_len);
-        printf("m_iReadNum=%d,len=%d,recieveBuf_len=%d,thread=%lu\n",m_iReadNum,len,recieveBuf_len,pthread_self());
+        //printf("m_iReadNum=%d,len=%d,recieveBuf_len=%d,thread=%lu\n",m_iReadNum,len,recieveBuf_len,pthread_self());
         sendData(m_recieveBuf,recieveBuf_len);
     }else{
         cout<<"resolveProtocol error happen"<<endl;

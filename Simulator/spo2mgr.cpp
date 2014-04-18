@@ -26,13 +26,13 @@ Spo2Mgr::~Spo2Mgr()
 }
 void Spo2Mgr::onTimer(){
 
-//    int readnum = read();
-//
-//    int time = test(readnum);
-//    if(time!=0){ // have not start test
-//        printf("NibpMgr::onTimer   interval=%dms times=%d",time,m_testMsg.times);
-//        display();
-//    }
+    int readnum = read();
+
+    int time = test(readnum);
+    if(time!=0){ // have not start test
+        printf("Spo2Mgr::onTimer   interval=%dms times=%d",time,m_testMsg.times);
+        display();
+    }
 
 }
 void Spo2Mgr::display(){

@@ -92,16 +92,6 @@ void Spo2Window::freOk_click(){
 
     ui->pTm_edit->clear();
     ui->pTm_edit->append(QString::number(m_spo2Mgr->getTimeout()));
-
-
-//    char buf[100]={0};
-//    sprintf(buf,"3214");
-//    cout<<"start buf="<<buf<<endl;
-//    BYTE buf[5];
-//    for(int i=0;i<5;i++){
-//        buf[i] = i+1;
-//    }
-//    que.push(buf,5);
 }
 
 void Spo2Window::freCancel_click(){
@@ -118,7 +108,7 @@ void Spo2Window::rcOk_click(){
     ui->pRc_edit->setEnabled(false);
     ui->pRcCancel_btn->setFocus();
 
-    QString str = ui->pFre_edit->toPlainText();
+    QString str = ui->pRc_edit->toPlainText();
     bool toIntOk = false;
     int val = str.toInt(&toIntOk,10);
     if(!toIntOk){
@@ -126,9 +116,10 @@ void Spo2Window::rcOk_click(){
         return;
     }
     cout<<"val="<<val<<endl;
+    m_spo2Mgr->setReadNum(val);
+
     ui->pMsg_Txt->clear();
     ui->pStatistics_txt->clear();
-    m_spo2Mgr->setReadNum(val);
 }
 
 void Spo2Window::rcCancel_click(){
