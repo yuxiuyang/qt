@@ -10,7 +10,7 @@
 #include "l_jn.h"
 #include <algorithm>//使用泛型算法必须包含头文件algorithm
 #include "../include/define.h"
-#include "recvobject.h"
+#include "../common/recvobject.h"
 using namespace std;
 class DataDev;
 struct INFO_DATA{
@@ -20,13 +20,26 @@ struct INFO_DATA{
     DataDev* pThis;
 };
 enum THREAD_STATE{
+    THREAD_NOTSTART,
     THREAD_RUNNING,
     THREAD_STOP,
     THREAD_SUSPEND,
 };
-struct RECVOBJECT_FD{
-    RecvObject* object;
+struct CALLBACK_FD{
+    int (*callBack_)(int);
     int         fd;
+    RecvObject* object;
+    bool isNeedToDelete;
+
+    CALLBACK_FD(){
+        reset();
+    }
+    void reset(){
+        callBack_ = NULL;
+        fd = -1;
+        object = NULL;
+        isNeedToDelete = false;
+    }
 };
 
 class DataDev : public QThread
@@ -49,31 +62,33 @@ class DataDev : public QThread
         void sendData(int fd,const BYTE* buf,int len);
         void sendData(int socketFd,MsgType_ msgType,ClientType_ clientType,DataSource_ dataSource,const BYTE* buf,const int len);
         bool checkData(const BYTE* buf,const int len,const BYTE value);
-//        void setCallback(void(*callback)(int)){
-//            CallBack_ = callback;
-//        }
+
         bool removeFd(int fd);
-        RecvObject* findFd(int fd);
+        bool addFd(const int fd,int(*callback)(int));
+        bool removeAll(RecvObject* object=NULL);
+        CALLBACK_FD* findFd(int fd);
+
+        bool displayRemoteClientSocketMsg(int sockeFd);
+        bool isValidateFd(int Fd);
+        bool checkRecvFd(int Fd);
+        void start ( Priority priority = InheritPriority );
+        void stop();
 protected:
         static void sendData_(void* pv);
         void recvData();
         virtual void run();
-
-
-        bool addFd(RecvObject* object,int fd);
-        bool removeAll(RecvObject* object=NULL);
+        bool addFd(RecvObject* object,const int fd);
 
 private:
         static DataDev* m_instance;
 
-        vector<RECVOBJECT_FD*> m_objectFdVec;//just
+        vector<CALLBACK_FD*> m_callbackFdVec;//just
 
         QMutex m_sendMutex;//
         QMutex m_socketFdMutex;
         CJobNest *m_pDataJob;//send data task thread.
 
         THREAD_STATE m_pthreadState;
-        //void (*CallBack_)(int);
 
 };
 

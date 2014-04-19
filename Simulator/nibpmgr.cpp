@@ -24,6 +24,7 @@ NibpMgr::~NibpMgr()
         m_network = NULL;
     }
     assert(closeFile());
+
 }
 void NibpMgr::sendData(const BYTE* buf,int len){
     //cout<<"nibpmgr  senddata"<<endl;
@@ -42,10 +43,6 @@ void NibpMgr::onTimer(){
     }
 }
 
-int NibpMgr::recvData(int fd){
-    return 0;
-}
-
 void NibpMgr::display(){
 
     if(m_testMsg.usedtimeSum >= REFRESH_TIME){//auto display to ui
@@ -55,4 +52,25 @@ void NibpMgr::display(){
     if(isShowData())
         ((NibpWindow*)m_Ui)->showData(m_readBuf);
 
+}
+int NibpMgr::data_Arrived(int fd){
+    BYTE buf[1024];
+    memset(buf,0,sizeof(buf));
+    int len = recv(fd,buf,sizeof(buf),0);
+    if(len<0){
+        ((NibpWindow*)m_Ui)->showData("recv failure");
+    }else if(len == 0){
+        ((NibpWindow*)m_Ui)->showData("this fd has close");
+    }else{
+        string strBuf="recv success : ";
+        char tmp[10]={0};
+        for(int i=0;i<len;i++){
+            sprintf(tmp,"%02x ",buf[i]);
+            strBuf += tmp;
+        }
+
+        ((NibpWindow*)m_Ui)->showData(strBuf.c_str());
+    }
+
+    return 0;
 }

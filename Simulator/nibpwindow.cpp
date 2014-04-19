@@ -200,11 +200,12 @@ void NibpWindow::displayStatisicsResult(){
           qt qtextbrowser 添加字符
 */
 }
-void NibpWindow::showData(char* buf){
+void NibpWindow::showData(const char* buf){
     QTextCursor cursor =  ui->pMsg_Txt->textCursor();
     cursor.movePosition(QTextCursor::End);
     ui->pMsg_Txt->setTextCursor(cursor);
-    ui->pMsg_Txt->insertPlainText(buf);
+    //ui->pMsg_Txt->insertPlainText(buf);
+    ui->pMsg_Txt->append(buf);
 }
 void NibpWindow::appendStatisticsMsg(char* buf){
     QTextCursor cursor =  ui->pStatistics_txt->textCursor();

@@ -126,7 +126,7 @@ void LinkMgr::getClientSocketFd(vector<int>* vec){
         vec->push_back(*iter);
     }
 }
-int LinkMgr::recvData(int Fd){
+int LinkMgr::data_Arrived(int Fd){
     if(Fd == getServerFd()){
         return waitAcceptConnect();
     }

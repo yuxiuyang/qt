@@ -92,8 +92,7 @@ void MainWindow::start_click(){
     sprintf(buf,"start threadid=%lu",pthread_self());
     ui->pMsg_Txt->append(buf);
 
-    MgrDev* mgrDev = MgrDev::getInstance();
-    mgrDev->start();
+    MgrDev::getInstance()->start();
 }
 
 void MainWindow::stop_click(){
@@ -104,6 +103,8 @@ void MainWindow::stop_click(){
     char buf[100];
     sprintf(buf,"stop threadid=%lu",pthread_self());
     ui->pMsg_Txt->append(buf);
+
+    MgrDev::getInstance()->stop();
 }
 
 void MainWindow::spo2_click(){

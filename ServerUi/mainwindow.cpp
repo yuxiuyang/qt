@@ -81,7 +81,7 @@ void MainWindow::stop_click(){
     ui->pStart_btn->setEnabled(true);
     ui->pStop_btn->setEnabled(false);
     ui->pStart_label->setText("server stop");
-    DataDev::getInstance()->terminate();
+    DataDev::getInstance()->stop();
 }
 
 void MainWindow::clearConnectMsg_click(){

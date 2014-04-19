@@ -168,8 +168,9 @@ bool BasicMgr::connect(){
 }
 
 bool BasicMgr::disConnect(){
-    DataDev::getInstance()->removeFd(m_network->getSockFd());
-    return m_network->disConnect();
+    removeFd(m_network->getSockFd());
+    m_network->disConnect();
+    return false;
 }
 void BasicMgr::analyseCmd(int cmd,void* wparam,void* lparam){
 

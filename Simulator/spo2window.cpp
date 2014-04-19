@@ -22,7 +22,6 @@ Spo2Window::Spo2Window(QWidget *parent) :
     connect(ui->pShowReadData_check,SIGNAL(stateChanged(int)),this,SLOT(showReadDataCheckStateChanged(int)));
     connect(ui->pConnect_btn, SIGNAL(clicked()), this, SLOT(connectNetwork()));
     connect(ui->pDisConnect_btn, SIGNAL(clicked()), this, SLOT(disConnectNetwork()));
-    connect(ui->pSendTestData_btn, SIGNAL(clicked()), this, SLOT(sendTestData()));
 
     m_spo2Mgr = new Spo2Mgr();
     assert(m_spo2Mgr);

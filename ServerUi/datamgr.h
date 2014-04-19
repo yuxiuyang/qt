@@ -2,7 +2,6 @@
 #define DATAMGR_H
 #include "../include/define.h"
 #include "linkmgr.h"
-#include "../common/recvobject.h"
 class DataMgr
 {
 public:

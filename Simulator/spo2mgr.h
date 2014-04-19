@@ -9,13 +9,13 @@ public:
 
 public:
     void onTimer();
-    int recvData(int fd);
     void sendData(const BYTE* buf,int len);
     void setWindow(void* win){
         assert(win);
         m_Ui = win;
     }
     void display();
+    int data_Arrived(int fd);
 protected:
 
 

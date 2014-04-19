@@ -17,6 +17,3 @@ bool RecvObject::removeFd(int fd){
     DataDev::getInstance()->removeFd(fd);
 }
 
-RecvObject* RecvObject::findFd(int fd){
-    DataDev::getInstance()->findFd(fd);
-}

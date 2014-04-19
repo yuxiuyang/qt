@@ -23,11 +23,11 @@ public:
     void run();
     static MgrDev* getInstance();
     static MgrDev* m_instance;
+    void stop();
 
     bool registerObject(void* object);//
     bool unregisterObject(void* object);
 protected:
-    void stopTimer();
     bool findObject(void* object);
 signals:
 

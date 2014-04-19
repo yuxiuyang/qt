@@ -6,7 +6,6 @@
 #include <sys/time.h>
 #include "file.h"
 #include "network.h"
-#include "../common/recvobject.h"
 #include "../common/datadev.h"
 #define MAX_READ_TXT 3*300+1
 #define MAX_BUF 1024

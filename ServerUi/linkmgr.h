@@ -38,7 +38,7 @@ public:
 
     int getServerFd();
 
-    int recvData(int Fd);
+    int data_Arrived(int Fd);
 private:
     vector<int> m_clientConnectMsgVec;
     vector<int> m_registerClientSocketFdVec;

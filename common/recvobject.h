@@ -7,11 +7,10 @@ public:
     RecvObject();
     virtual ~RecvObject();
 
-    virtual int recvData(int fd)=0;
+    virtual int data_Arrived(int fd)=0;
 
     bool addFd(int fd);
     bool removeFd(int fd);
-    RecvObject* findFd(int fd);
 };
 
 #endif // RECVOBJECT_H

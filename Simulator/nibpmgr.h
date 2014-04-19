@@ -9,7 +9,6 @@ public:
 
 public:
     void onTimer();
-    int recvData(int fd);
     void sendData(const BYTE* msg,int len);
 
     void setWindow(void* win){
@@ -17,6 +16,7 @@ public:
         m_Ui = win;
     }
     void display();
+    int data_Arrived(int fd);
 
 protected:
 

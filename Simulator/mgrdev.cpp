@@ -15,9 +15,7 @@ MgrDev::MgrDev(QObject *parent) :
 }
 MgrDev::~MgrDev(){
     assert(m_instance);
-    stopTimer();
-    quit();
-    wait();
+    stop();
     delete m_timer;
     m_timer = NULL;
 }
@@ -49,6 +47,7 @@ void MgrDev::run(){
     m_timer->start(BASIC_TIMER_TIME);
     cout<<"start thread and timer"<<endl;
     exec();
+    cout<<"end thread timer "<<endl;
 }
 
 
@@ -74,11 +73,14 @@ void MgrDev::_onWriteTimeout()
     }
 }
 
-void MgrDev::stopTimer()
+void MgrDev::stop()
 {
     assert(m_timer);
     if ( m_timer->isActive() ){
+        cout<<"stop timer"<<endl;
         m_timer->stop();
+        quit();//exit timer thread
+        wait();
     }
 }
 bool MgrDev::registerObject(void* object){

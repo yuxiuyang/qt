@@ -29,7 +29,7 @@ public Q_SLOTS:
     void genarateNewDataCheckStateChanged(int state);
     void showReadDataCheckStateChanged(int state);
     void appendStatisticsMsg(char* buf);
-    void showData(char* buf);
+    void showData(const char* buf);
     void connectNetwork();
     void disConnectNetwork();
     void sendTestData();

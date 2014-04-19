@@ -6,9 +6,6 @@ Network::Network()
 {
     memset(&m_serverAddress,0,sizeof(m_serverAddress));
     m_serverPort = 8090;
-
-    //忽略SIGPIPE 信号
-    signal(SIGPIPE,SIG_IGN);
 }
 bool Network::init(){
     m_sockFd = socket(AF_INET, SOCK_STREAM, 0);
@@ -37,11 +34,15 @@ int Network::connect(){
         m_sockFd = -1;
     }
     printf("connect ok !\r\n");
+
+    //忽略SIGPIPE 信号
+    signal(SIGPIPE,SIG_IGN);
     return m_sockFd;
 }
 bool Network::disConnect(){
-    cout<<"close socket fd="<<m_sockFd<<endl;
     close(m_sockFd);
+    cout<<"close socket fd="<<m_sockFd<<endl;
+    m_sockFd = -1;
     return true;
 }
 

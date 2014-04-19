@@ -8,9 +8,6 @@ Network_Server::Network_Server()
 {
     m_serverSockFd = -1;
     m_serverPort = 8090;
-
-    //忽略SIGPIPE 信号
-    signal(SIGPIPE,SIG_IGN);
 }
 Network_Server::~Network_Server()
 {
@@ -45,6 +42,8 @@ bool Network_Server::init(){
         printf("listen fail !\r\n");
         return false;
     }
+    //忽略SIGPIPE 信号
+    signal(SIGPIPE,SIG_IGN);
     printf("listen ok\r\n");
     return true;
 }

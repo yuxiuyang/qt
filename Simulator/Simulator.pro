@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     ecgwindow.cpp \
     datamgr.cpp \
     ../common/datadev.cpp \
-    ../common/recvobject.cpp
+    ../common/recvobject.cpp \
+    ../common/fltkLog.cpp
 HEADERS += mainwindow.h \
     mgrdev.h \
     basicmgr.h \
@@ -34,7 +35,8 @@ HEADERS += mainwindow.h \
     ecgwindow.h \
     datamgr.h \
     ../common/datadev.h \
-    ../common/recvobject.h
+    ../common/recvobject.h \
+    ../common/fltkLog.h
 FORMS += mainwindow.ui \
     spo2window.ui \
     nibpwindow.ui \
