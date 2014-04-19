@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mgrdev.h'
 **
-** Created: Sat Apr 19 19:28:01 2014
+** Created: Sun Apr 20 00:37:03 2014
 **      by: The Qt Meta Object Compiler version 59 (Qt 4.3.2)
 **
 ** WARNING! All changes made in this file will be lost!

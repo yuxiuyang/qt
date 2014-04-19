@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'spo2window.ui'
 **
-** Created: Sat Apr 19 07:18:40 2014
+** Created: Sun Apr 20 00:36:50 2014
 **      by: Qt User Interface Compiler version 4.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
