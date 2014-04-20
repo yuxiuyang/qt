@@ -59,6 +59,7 @@ class DataDev : public QThread
         friend class RecvObject;
         static DataDev* getInstance();
 
+        void sendTestData(int type);
         void sendData(int fd,const BYTE* buf,int len);
         void sendData(int socketFd,MsgType_ msgType,ClientType_ clientType,DataSource_ dataSource,const BYTE* buf,const int len);
         bool checkData(const BYTE* buf,const int len,const BYTE value);

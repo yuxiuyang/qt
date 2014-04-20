@@ -31,10 +31,10 @@ DataDev::~DataDev(){
 }
 void DataDev::start ( Priority priority ){
     if(!m_callbackFdVec.empty()){
-        m_pthreadState = THREAD_RUNNING;
         log.Write("start......");
         QThread::start(priority);
     }
+    m_pthreadState = THREAD_RUNNING;
 }
 void DataDev::stop(){
     m_pthreadState = THREAD_NOTSTART;
@@ -49,6 +49,7 @@ void DataDev::run(){//device recv data
     recvData();
     log.Write("thread run end thread=%lu",pthread_self());
 }
+
 
 void DataDev::recvData(){
     fd_set fdSet;
@@ -85,6 +86,7 @@ void DataDev::recvData(){
            if(maxFd<(*iter)->fd){
                 maxFd = (*iter)->fd;
             }
+           //log.Write("start listen fd=%d",(*iter)->fd);
            iter++;
        }
 
@@ -200,7 +202,19 @@ void DataDev::sendData_(void* pv){
         }
     }
 }
-
+void DataDev::sendTestData(int type){
+    BYTE tmp[3];
+    tmp[0] = 0x99;
+    tmp[1] = 0x88;
+    tmp[2] = 0x77;
+    int socket = 23;
+    int size = send(m_callbackFdVec[type]->fd,tmp,3,0);
+    log.Write("fd=%d,size=%d   send success",m_callbackFdVec[type]->fd,size);
+    if(size<=0){
+        cout<<"main window send failure\n";
+    }
+    return;
+}
 
 bool DataDev::addFd(const int fd,int(*callback)(int)){
     m_socketFdMutex.lock();
@@ -241,7 +255,7 @@ bool DataDev::addFd(RecvObject* object,const int fd){
     p->fd = fd;
 
     m_callbackFdVec.push_back(p);
-    if(m_pthreadState!=THREAD_NOTSTART && m_pthreadState!=THREAD_RUNNING){
+    if(m_pthreadState!=THREAD_NOTSTART){
         m_pthreadState = THREAD_RUNNING;
         start();
     }
